@@ -40,29 +40,29 @@ fn test_date_time_pattern_format_yyyy_mm_dd() {
 
 #[test]
 fn test_time_unit_to_nanoseconds() {
-    assert_eq!(TimeUnit::Nanoseconds.to_nanoseconds(1024), 1024);
+    assert_eq!(TimeUnit::Nanoseconds.to_nanos(1024), 1024);
     assert_eq!(
-        TimeUnit::Microseconds.to_nanoseconds(1024),
+        TimeUnit::Microseconds.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_MICROSECOND
     );
     assert_eq!(
-        TimeUnit::Milliseconds.to_nanoseconds(1024),
+        TimeUnit::Milliseconds.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_MILLISECOND
     );
     assert_eq!(
-        TimeUnit::Seconds.to_nanoseconds(1024),
+        TimeUnit::Seconds.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_SECOND
     );
     assert_eq!(
-        TimeUnit::Minutes.to_nanoseconds(1024),
+        TimeUnit::Minutes.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_MINUTE
     );
     assert_eq!(
-        TimeUnit::Hours.to_nanoseconds(1024),
+        TimeUnit::Hours.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_HOUR
     );
     assert_eq!(
-        TimeUnit::Days.to_nanoseconds(1024),
+        TimeUnit::Days.to_nanos(1024),
         1024 * TimeUnit::NANOS_PER_DAY
     );
 }
