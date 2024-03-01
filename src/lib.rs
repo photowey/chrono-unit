@@ -128,6 +128,8 @@ pub enum TimeUnit {
 }
 
 impl TimeUnit {
+    pub const ZERO: u64 = 0;
+    pub const ONE: u64 = 1;
     pub const THOUSAND: u64 = 1000;
 
     // ----------------------------------------------------------------
@@ -138,7 +140,11 @@ impl TimeUnit {
 
     // ----------------------------------------------------------------
 
-    pub const NANOS_SCALE: u64 = 1;
+    pub const NANOS_SCALE: u64 = Self::ONE;
+    pub const THOUSAND_SCALE: u64 = Self::THOUSAND;
+
+    // ----------------------------------------------------------------
+
     pub const MICROSECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::NANOS_SCALE;
     pub const MILLISECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::MICROSECOND_SCALE;
     pub const SECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::MILLISECOND_SCALE;
@@ -146,14 +152,11 @@ impl TimeUnit {
     pub const HOUR_SCALE: u64 = Self::MINUTES_PER_HOUR * Self::MINUTE_SCALE;
     pub const DAY_SCALE: u64 = Self::HOURS_PER_DAY * Self::HOUR_SCALE;
 
-    pub const THOUSAND_SCALE: u64 = Self::THOUSAND;
-
     // ----------------------------------------------------------------
 
     pub const NANOS_PER_MICROSECOND: u64 = Self::MICROSECOND_SCALE;
     pub const NANOS_PER_MILLISECOND: u64 = Self::MILLISECOND_SCALE;
     pub const NANOS_PER_SECOND: u64 = Self::SECOND_SCALE;
-
     pub const NANOS_PER_MINUTE: u64 = Self::MINUTE_SCALE;
     pub const NANOS_PER_HOUR: u64 = Self::HOUR_SCALE;
     pub const NANOS_PER_DAY: u64 = Self::DAY_SCALE;
