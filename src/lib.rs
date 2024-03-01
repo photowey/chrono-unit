@@ -133,7 +133,7 @@ impl TimeUnit {
     pub const NANOS_PER_HOUR: u64 = Self::MINUTES_PER_HOUR * Self::NANOS_PER_MINUTE;
     pub const NANOS_PER_DAY: u64 = Self::HOURS_PER_DAY * Self::NANOS_PER_HOUR;
 
-    pub fn to_nanoseconds(&self, amount: u64) -> u64 {
+    pub fn to_nanos(&self, amount: u64) -> u64 {
         match self {
             TimeUnit::Nanoseconds => amount,
             TimeUnit::Microseconds => amount * Self::NANOS_PER_MICROSECOND,
@@ -145,16 +145,16 @@ impl TimeUnit {
         }
     }
 
-    pub fn to_microseconds(&self, amount: u64) -> u64 {
-        self.to_nanoseconds(amount) / Self::NANOS_PER_MICROSECOND
+    pub fn to_micros(&self, amount: u64) -> u64 {
+        self.to_nanos(amount) / Self::NANOS_PER_MICROSECOND
     }
 
-    pub fn to_milliseconds(&self, amount: u64) -> u64 {
-        self.to_nanoseconds(amount) / Self::NANOS_PER_MILLISECOND
+    pub fn to_millis(&self, amount: u64) -> u64 {
+        self.to_nanos(amount) / Self::NANOS_PER_MILLISECOND
     }
 
     pub fn to_seconds(&self, amount: u64) -> u64 {
-        self.to_nanoseconds(amount) / Self::NANOS_PER_SECOND
+        self.to_nanos(amount) / Self::NANOS_PER_SECOND
     }
 
     pub fn to_minutes(&self, amount: u64) -> u64 {
