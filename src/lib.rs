@@ -111,27 +111,54 @@ impl DateTimePattern {
 
 /// [`TimeUnit`] time unit.
 pub enum TimeUnit {
+    /// Time unit representing one thousandth of a microsecond.
     Nanoseconds,
+    /// Time unit representing one thousandth of a millisecond.
     Microseconds,
+    // Time unit representing one thousandth of a second.
     Milliseconds,
+    /// Time unit representing one second.
     Seconds,
+    /// Time unit representing sixty seconds.
     Minutes,
+    /// Time unit representing sixty minutes.
     Hours,
+    /// Time unit representing twenty-four hours.
     Days,
 }
 
 impl TimeUnit {
+    pub const THOUSAND: u64 = 1000;
+
+    // ----------------------------------------------------------------
+
     pub const SECONDS_PER_MINUTE: u64 = 60;
     pub const MINUTES_PER_HOUR: u64 = 60;
     pub const HOURS_PER_DAY: u64 = 24;
 
-    pub const NANOS_PER_MICROSECOND: u64 = 1_000;
-    pub const NANOS_PER_MILLISECOND: u64 = 1_000_000;
-    pub const NANOS_PER_SECOND: u64 = 1_000_000_000;
+    // ----------------------------------------------------------------
 
-    pub const NANOS_PER_MINUTE: u64 = Self::SECONDS_PER_MINUTE * Self::NANOS_PER_SECOND;
-    pub const NANOS_PER_HOUR: u64 = Self::MINUTES_PER_HOUR * Self::NANOS_PER_MINUTE;
-    pub const NANOS_PER_DAY: u64 = Self::HOURS_PER_DAY * Self::NANOS_PER_HOUR;
+    pub const NANOS_SCALE: u64 = 1;
+    pub const MICROSECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::NANOS_SCALE;
+    pub const MILLISECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::MICROSECOND_SCALE;
+    pub const SECOND_SCALE: u64 = Self::THOUSAND_SCALE * Self::MILLISECOND_SCALE;
+    pub const MINUTE_SCALE: u64 = Self::SECONDS_PER_MINUTE * Self::SECOND_SCALE;
+    pub const HOUR_SCALE: u64 = Self::MINUTES_PER_HOUR * Self::MINUTE_SCALE;
+    pub const DAY_SCALE: u64 = Self::HOURS_PER_DAY * Self::HOUR_SCALE;
+
+    pub const THOUSAND_SCALE: u64 = Self::THOUSAND;
+
+    // ----------------------------------------------------------------
+
+    pub const NANOS_PER_MICROSECOND: u64 = Self::MICROSECOND_SCALE;
+    pub const NANOS_PER_MILLISECOND: u64 = Self::MILLISECOND_SCALE;
+    pub const NANOS_PER_SECOND: u64 = Self::SECOND_SCALE;
+
+    pub const NANOS_PER_MINUTE: u64 = Self::MINUTE_SCALE;
+    pub const NANOS_PER_HOUR: u64 = Self::HOUR_SCALE;
+    pub const NANOS_PER_DAY: u64 = Self::DAY_SCALE;
+
+    // ----------------------------------------------------------------
 
     pub fn to_nanos(&self, amount: u64) -> u64 {
         match self {
