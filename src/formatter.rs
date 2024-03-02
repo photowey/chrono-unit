@@ -40,7 +40,7 @@ pub trait DateTimeFormatter {
 
     /// [`default_format_date_time_utc`]
     ///
-    /// Formats a UTC date and time according to the default pattern, associated [`Self::of_pattern`] function.
+    /// Formats a UTC date and time according to the formatter default pattern(new/or_pattern).
     fn default_format_date_time_utc(&self, datetime: &DateTime<Utc>) -> String {
         self.format_date_time_utc(datetime, self.activated_pattern())
     }
@@ -88,9 +88,55 @@ pub trait DateTimeFormatter {
     ///
     /// This function takes a reference to a [`NaiveDateTime`] object and a [`DateTimePattern`] enum value,
     /// then formats the datetime based on the provided pattern, returning a formatted string.
-    fn format_naive_date_time(&self, datetime: &NaiveDateTime, pattern: DateTimePattern) -> String {
+    fn format_naive_date_time_utc(
+        &self,
+        datetime: &NaiveDateTime,
+        pattern: DateTimePattern,
+    ) -> String {
         let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(datetime);
         self.format_date_time_utc(&datetime_utc, pattern)
+    }
+
+    /// [`default_format_naive_date_time`]
+    ///
+    /// Formats a [`NaiveDateTime`] date and time according to the formatter default pattern(new/or_pattern).
+    fn default_format_naive_date_time(&self, datetime: &NaiveDateTime) -> String {
+        self.format_naive_date_time(datetime, self.activated_pattern())
+    }
+
+    /// [`format_naive_date_time`]
+    ///
+    /// Formats a [`NaiveDateTime`] according to the specified pattern.
+    ///
+    /// This function takes a reference to a [`NaiveDateTime`] object and a `DateTimePattern` enum value,
+    /// then formats the datetime based on the provided pattern, returning a formatted string.
+    fn format_naive_date_time(&self, datetime: &NaiveDateTime, pattern: DateTimePattern) -> String {
+        match pattern {
+            DateTimePattern::YyyyMmDd => datetime.format(DateTimePattern::YYYY_MM_DD).to_string(), // Formats as "year-month-day"
+            DateTimePattern::MmDdYyyy => datetime.format(DateTimePattern::MM_DD_YYYY).to_string(), // Formats as "month-day-year"
+            DateTimePattern::DdMmYyyy => datetime.format(DateTimePattern::DD_MM_YYYY).to_string(), // Formats as "day-month-year"
+            DateTimePattern::YyyyMmDdHhMm => datetime
+                .format(DateTimePattern::YYYY_MM_DD_HH_MM)
+                .to_string(), // Formats as "year-month-day hour-minute"
+            DateTimePattern::YyyyMmDdHhMmSs => datetime
+                .format(DateTimePattern::YYYY_MM_DD_HH_MM_SS)
+                .to_string(), // Formats as "year-month-day hour-minute-second"
+            DateTimePattern::YyyyMmDdHhMmSsSss => datetime
+                .format(DateTimePattern::YYYY_MM_DD_HH_MM_SS_SSS)
+                .to_string(), // Formats as "year-month-day hour-minute-second-millisecond
+            DateTimePattern::HhMm => datetime.format(DateTimePattern::HH_MM).to_string(), // Formats as "hour-minute"
+            DateTimePattern::HhMmSs => datetime.format(DateTimePattern::HH_MM_SS).to_string(), // Formats as "hour-minute-second"
+            DateTimePattern::MonthFull => datetime.format(DateTimePattern::MONTH_FULL).to_string(), // Formats as "full month name"
+            DateTimePattern::MonthAbbr => datetime.format(DateTimePattern::MONTH_ABBR).to_string(), // Formats as "abbreviated month name"
+            DateTimePattern::WeekdayFull => {
+                datetime.format(DateTimePattern::WEEKDAY_FULL).to_string()
+            } // Formats as "full weekday name"
+            DateTimePattern::WeekdayAbbr => {
+                datetime.format(DateTimePattern::WEEKDAY_ABBR).to_string()
+            } // Formats as "abbreviated weekday name"
+            DateTimePattern::AmPm => datetime.format(DateTimePattern::AM_PM).to_string(), // Formats as "AM/PM"
+            DateTimePattern::Timestamp => datetime.timestamp().to_string(), // Formats as "timestamp"
+        }
     }
 }
 
