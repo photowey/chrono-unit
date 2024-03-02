@@ -1,2 +1,3 @@
-# chrono-unit
-A time-unit library for Rust chrono
+# `chrono-unit`
+
+A `date-time` library for `Rust` `time`
