@@ -38,10 +38,10 @@ pub trait DateTimeFormatter {
     /// Get the pattern associated with this formatter.
     fn activated_pattern(&self) -> DateTimePattern;
 
-    /// [`default_format_date_time_utc`]
+    /// [`format_date_time_utc_default`]
     ///
     /// Formats a UTC date and time according to the formatter default pattern(new/or_pattern).
-    fn default_format_date_time_utc(&self, datetime: &DateTime<Utc>) -> String {
+    fn format_date_time_utc_default(&self, datetime: &DateTime<Utc>) -> String {
         self.format_date_time_utc(datetime, self.activated_pattern())
     }
 
@@ -82,7 +82,7 @@ pub trait DateTimeFormatter {
 
     // ----------------------------------------------------------------
 
-    /// [`crate::formatter::format_naive_date_time`]
+    /// [`format_naive_date_time`]
     ///
     /// Formats a [`NaiveDateTime`] according to the specified pattern.
     ///
@@ -97,10 +97,10 @@ pub trait DateTimeFormatter {
         self.format_date_time_utc(&datetime_utc, pattern)
     }
 
-    /// [`default_format_naive_date_time`]
+    /// [`format_naive_date_time_default`]
     ///
     /// Formats a [`NaiveDateTime`] date and time according to the formatter default pattern(new/or_pattern).
-    fn default_format_naive_date_time(&self, datetime: &NaiveDateTime) -> String {
+    fn format_naive_date_time_default(&self, datetime: &NaiveDateTime) -> String {
         self.format_naive_date_time(datetime, self.activated_pattern())
     }
 

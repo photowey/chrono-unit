@@ -32,7 +32,7 @@ fn test_date_time_formatter_format_default() {
     let dtf = DefaultDateTimeFormatter::default();
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01 02:03:04"
     );
     assert_eq!(
@@ -54,7 +54,7 @@ fn test_date_time_formatter_format_new() {
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01"
     );
     assert_eq!(
@@ -76,7 +76,7 @@ fn test_date_time_formatter_format_yyyy_mm_dd() {
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01"
     );
     assert_eq!(
@@ -98,7 +98,7 @@ fn test_date_time_formatter_format_mm_dd_yyyy() {
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::MmDdYyyy);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "03/01/2024"
     );
     assert_eq!(
@@ -120,7 +120,7 @@ fn test_date_time_formatter_format_dd_mm_yyyy() {
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::DdMmYyyy);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "01-03-2024"
     );
     assert_eq!(
@@ -142,7 +142,7 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm() {
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMm);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01 02:03"
     );
     assert_eq!(
@@ -163,7 +163,7 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss() {
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSs);
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01 02:03:04"
     );
     assert_eq!(
@@ -184,7 +184,7 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss_sss() {
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSsSss);
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01 02:03:04.789"
     );
     assert_eq!(
@@ -204,7 +204,7 @@ fn test_date_time_formatter_format_hh_mm() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::HhMm);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "02:03");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "02:03");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMm),
         "02:03"
@@ -222,7 +222,7 @@ fn test_date_time_formatter_format_hh_mm_ss() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::HhMmSs);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "02:03:04");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "02:03:04");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
         "02:03:04"
@@ -240,7 +240,7 @@ fn test_date_time_formatter_format_month_full() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::MonthFull);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "March");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "March");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MonthFull),
         "March"
@@ -258,7 +258,7 @@ fn test_date_time_formatter_format_month_abbr() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::MonthAbbr);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "Mar");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "Mar");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MonthAbbr),
         "Mar"
@@ -276,7 +276,7 @@ fn test_date_time_formatter_format_weekday_full() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::WeekdayFull);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "Friday");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "Friday");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::WeekdayFull),
         "Friday"
@@ -294,7 +294,7 @@ fn test_date_time_formatter_format_weekday_abbr() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::WeekdayAbbr);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "Fri");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "Fri");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::WeekdayAbbr),
         "Fri"
@@ -312,7 +312,7 @@ fn test_date_time_formatter_format_am_pm_am() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::AmPm);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "AM");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "AM");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::AmPm),
         "AM"
@@ -330,7 +330,7 @@ fn test_date_time_formatter_format_am_pm_pm() {
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::AmPm);
-    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "PM");
+    assert_eq!(dtf.format_date_time_utc_default(&datetime_utc), "PM");
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::AmPm),
         "PM"
@@ -349,7 +349,7 @@ fn test_date_time_formatter_format_timestamp() {
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::Timestamp);
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "1709258584"
     ); // +8 -> 2024-03-01 10:03:04
     assert_eq!(
@@ -371,7 +371,7 @@ fn test_date_time_formatter_naive_date_time_format_yyyy_mm_dd() {
 
     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
 
-    assert_eq!(dtf.default_format_naive_date_time(&ndt), "2024-03-01");
+    assert_eq!(dtf.format_naive_date_time_default(&ndt), "2024-03-01");
     assert_eq!(
         dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
         "2024-03-01"
@@ -390,7 +390,7 @@ fn test_date_time_formatter_of_pattern() {
     let dtf = dtf.of_pattern(DateTimePattern::YyyyMmDdHhMmSs);
 
     assert_eq!(
-        dtf.default_format_date_time_utc(&datetime_utc),
+        dtf.format_date_time_utc_default(&datetime_utc),
         "2024-03-01 02:03:04"
     );
     assert_eq!(
