@@ -16,96 +16,9 @@
 
 // ----------------------------------------------------------------
 
-use std::string::ToString;
-
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
-
+mod formatter;
 #[cfg(test)]
 mod tests;
-
-// ----------------------------------------------------------------
-
-// ----------------------------------------------------------------
-
-/// [`DateTimePattern`] date & time string pattern.
-pub enum DateTimePattern {
-    YyyyMmDd,
-    MmDdYyyy,
-    DdMmYyyy,
-    YyyyMmDdHhMm,
-    YyyyMmDdHhMmSs,
-    YyyyMmDdHhMmSsSss,
-    HhMm,
-    HhMmSs,
-    MonthFull,
-    MonthAbbr,
-    WeekdayFull,
-    WeekdayAbbr,
-    AmPm,
-    Timestamp,
-}
-
-impl DateTimePattern {
-    /// [`YYYY_MM_DD`] `%Y-%m-%d` ...
-    pub const YYYY_MM_DD: &'static str = "%Y-%m-%d";
-    pub const MM_DD_YYYY: &'static str = "%m/%d/%Y";
-    pub const DD_MM_YYYY: &'static str = "%d-%m-%Y";
-
-    pub const YYYY_MM_DD_HH_MM: &'static str = "%Y-%m-%d %H:%M";
-    pub const YYYY_MM_DD_HH_MM_SS: &'static str = "%Y-%m-%d %H:%M:%S";
-    pub const YYYY_MM_DD_HH_MM_SS_SSS: &'static str = "%Y-%m-%d %H:%M:%S%.3f";
-
-    pub const HH_MM: &'static str = "%H:%M";
-    pub const HH_MM_SS: &'static str = "%H:%M:%S";
-
-    pub const MONTH_FULL: &'static str = "%B";
-    pub const MONTH_ABBR: &'static str = "%b";
-
-    pub const WEEKDAY_FULL: &'static str = "%A";
-    pub const WEEKDAY_ABBR: &'static str = "%a";
-
-    pub const AM_PM: &'static str = "%p";
-
-    /// [`format_date_time_utc`]
-    ///
-    /// Formats a UTC date and time according to the specified pattern.
-    ///
-    /// This function takes a reference to a `DateTime<Utc>` object and a `DateTimePattern` enum value,
-    /// then formats the datetime based on the provided pattern, returning a formatted string.
-    pub fn format_date_time_utc(datetime: &DateTime<Utc>, pattern: DateTimePattern) -> String {
-        match pattern {
-            DateTimePattern::YyyyMmDd => datetime.format(Self::YYYY_MM_DD).to_string(), // Formats as "year-month-day"
-            DateTimePattern::MmDdYyyy => datetime.format(Self::MM_DD_YYYY).to_string(), // Formats as "month-day-year"
-            DateTimePattern::DdMmYyyy => datetime.format(Self::DD_MM_YYYY).to_string(), // Formats as "day-month-year"
-            DateTimePattern::YyyyMmDdHhMm => datetime.format(Self::YYYY_MM_DD_HH_MM).to_string(), // Formats as "year-month-day hour-minute"
-            DateTimePattern::YyyyMmDdHhMmSs => {
-                datetime.format(Self::YYYY_MM_DD_HH_MM_SS).to_string()
-            } // Formats as "year-month-day hour-minute-second"
-            DateTimePattern::YyyyMmDdHhMmSsSss => {
-                datetime.format(Self::YYYY_MM_DD_HH_MM_SS_SSS).to_string()
-            } // Formats as "year-month-day hour-minute-second-millisecond
-            DateTimePattern::HhMm => datetime.format(Self::HH_MM).to_string(), // Formats as "hour-minute"
-            DateTimePattern::HhMmSs => datetime.format(Self::HH_MM_SS).to_string(), // Formats as "hour-minute-second"
-            DateTimePattern::MonthFull => datetime.format(Self::MONTH_FULL).to_string(), // Formats as "full month name"
-            DateTimePattern::MonthAbbr => datetime.format(Self::MONTH_ABBR).to_string(), // Formats as "abbreviated month name"
-            DateTimePattern::WeekdayFull => datetime.format(Self::WEEKDAY_FULL).to_string(), // Formats as "full weekday name"
-            DateTimePattern::WeekdayAbbr => datetime.format(Self::WEEKDAY_ABBR).to_string(), // Formats as "abbreviated weekday name"
-            DateTimePattern::AmPm => datetime.format(Self::AM_PM).to_string(), // Formats as "AM/PM"
-            DateTimePattern::Timestamp => datetime.timestamp().to_string(), // Formats as "timestamp"
-        }
-    }
-
-    /// [`format_naive_date_time`]
-    ///
-    /// Formats a [`NaiveDateTime`] according to the specified pattern.
-    ///
-    /// This function takes a reference to a [`NaiveDateTime`] object and a [`DateTimePattern`] enum value,
-    /// then formats the datetime based on the provided pattern, returning a formatted string.
-    pub fn format_naive_date_time(datetime: &NaiveDateTime, pattern: DateTimePattern) -> String {
-        let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(datetime);
-        Self::format_date_time_utc(&datetime_utc, pattern)
-    }
-}
 
 // ----------------------------------------------------------------
 
@@ -128,19 +41,27 @@ pub enum TimeUnit {
 }
 
 impl TimeUnit {
+    /// 0
     pub const ZERO: u64 = 0;
+    /// 1
     pub const ONE: u64 = 1;
+    /// 1000
     pub const THOUSAND: u64 = 1000;
 
     // ----------------------------------------------------------------
 
+    /// 60
     pub const SECONDS_PER_MINUTE: u64 = 60;
+    /// 60
     pub const MINUTES_PER_HOUR: u64 = 60;
+    /// 24
     pub const HOURS_PER_DAY: u64 = 24;
 
     // ----------------------------------------------------------------
 
+    /// 1
     pub const NANOS_SCALE: u64 = Self::ONE;
+    /// 1000
     pub const THOUSAND_SCALE: u64 = Self::THOUSAND;
 
     // ----------------------------------------------------------------

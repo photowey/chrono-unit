@@ -18,22 +18,119 @@
 
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 
-use crate::{DateTimePattern, TimeUnit};
+use crate::formatter::{pattern::DateTimePattern, DateTimeFormatter, DefaultDateTimeFormatter};
+use crate::TimeUnit;
 
 // ---------------------------------------------------------------- date-time pattern
 
 #[test]
-fn test_date_time_pattern_format_yyyy_mm_dd() {
+fn test_date_time_formatter_format_default() {
     let now = "2024-03-01 02:03:04";
     let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
+    let dtf = DefaultDateTimeFormatter::default();
+
     assert_eq!(
-        DateTimePattern::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_new() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
         "2024-03-01"
     );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+        "2024-03-01"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
+        "2024-03-01"
+    );
+}
 
-    // ...
+#[test]
+fn test_date_time_formatter_format_yyyy_mm_dd() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+        "2024-03-01"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
+        "2024-03-01"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSs);
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_of_pattern() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
+    let dtf = dtf.of_pattern(DateTimePattern::YyyyMmDdHhMmSs);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
 }
 
 // ---------------------------------------------------------------- time-unit
