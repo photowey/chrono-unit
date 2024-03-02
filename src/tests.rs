@@ -90,6 +90,72 @@ fn test_date_time_formatter_format_yyyy_mm_dd() {
 }
 
 #[test]
+fn test_date_time_formatter_format_mm_dd_yyyy() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::MmDdYyyy);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "03/01/2024"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MmDdYyyy),
+        "03/01/2024"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::MmDdYyyy),
+        "03/01/2024"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_dd_mm_yyyy() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::DdMmYyyy);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "01-03-2024"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::DdMmYyyy),
+        "01-03-2024"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::DdMmYyyy),
+        "01-03-2024"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMm);
+
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01 02:03"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMm),
+        "2024-03-01 02:03"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMm),
+        "2024-03-01 02:03"
+    );
+}
+
+#[test]
 fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss() {
     let now = "2024-03-01 02:03:04";
     let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
@@ -107,6 +173,63 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss() {
     assert_eq!(
         dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
         "2024-03-01 02:03:04"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss_sss() {
+    let now = "2024-03-01 02:03:04.789";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S%.3f").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSsSss);
+    assert_eq!(
+        dtf.default_format_date_time_utc(&datetime_utc),
+        "2024-03-01 02:03:04.789"
+    );
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSsSss),
+        "2024-03-01 02:03:04.789"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSsSss),
+        "2024-03-01 02:03:04.789"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_hh_mm() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::HhMm);
+    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "02:03");
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMm),
+        "02:03"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::HhMm),
+        "02:03"
+    );
+}
+
+#[test]
+fn test_date_time_formatter_format_hh_mm_ss() {
+    let now = "2024-03-01 02:03:04";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    let dtf = DefaultDateTimeFormatter::new(DateTimePattern::HhMmSs);
+    assert_eq!(dtf.default_format_date_time_utc(&datetime_utc), "02:03:04");
+    assert_eq!(
+        dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
+        "02:03:04"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time(&ndt, DateTimePattern::HhMmSs),
+        "02:03:04"
     );
 }
 
