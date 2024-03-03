@@ -619,28 +619,118 @@ fn test_date_time_formatter_naive_date_time_format_timestamp() {
 #[test]
 fn test_time_unit_to_nanos() {
     assert_eq!(TimeUnit::Nanoseconds.to_nanos(1024), 1024);
-    assert_eq!(
-        TimeUnit::Microseconds.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_MICROSECOND
-    );
-    assert_eq!(
-        TimeUnit::Milliseconds.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_MILLISECOND
-    );
+    assert_eq!(TimeUnit::Microseconds.to_nanos(1024), 1024 * 1000);
+    assert_eq!(TimeUnit::Milliseconds.to_nanos(1024), 1024 * (1000 * 1000));
     assert_eq!(
         TimeUnit::Seconds.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_SECOND
+        1024 * (1000 * 1000 * 1000)
     );
     assert_eq!(
         TimeUnit::Minutes.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_MINUTE
+        1024 * (1000 * 1000 * 1000 * 60)
     );
     assert_eq!(
         TimeUnit::Hours.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_HOUR
+        1024 * (1000 * 1000 * 1000 * 60 * 60)
     );
     assert_eq!(
         TimeUnit::Days.to_nanos(1024),
-        1024 * TimeUnit::NANOS_PER_DAY
+        1024 * (1000 * 1000 * 1000 * 60 * 60 * 24)
     );
+}
+
+#[test]
+fn test_time_unit_to_micros() {
+    assert_eq!(TimeUnit::Nanoseconds.to_micros(1024), 1024 / 1000);
+    assert_eq!(TimeUnit::Microseconds.to_micros(1024), 1024);
+    assert_eq!(TimeUnit::Milliseconds.to_micros(1024), 1024 * 1000);
+    assert_eq!(TimeUnit::Seconds.to_micros(1024), 1024 * (1000 * 1000));
+    assert_eq!(TimeUnit::Minutes.to_micros(1024), 1024 * (1000 * 1000 * 60));
+    assert_eq!(
+        TimeUnit::Hours.to_micros(1024),
+        1024 * (1000 * 1000 * 60 * 60)
+    );
+    assert_eq!(
+        TimeUnit::Days.to_micros(1024),
+        1024 * (1000 * 1000 * 60 * 60 * 24)
+    );
+}
+
+#[test]
+fn test_time_unit_to_millis() {
+    assert_eq!(TimeUnit::Nanoseconds.to_millis(1024), 1024 / 1000 / 1000);
+    assert_eq!(TimeUnit::Microseconds.to_millis(1024), 1024 / 1000);
+    assert_eq!(TimeUnit::Milliseconds.to_millis(1024), 1024);
+    assert_eq!(TimeUnit::Seconds.to_millis(1024), 1024 * 1000);
+    assert_eq!(TimeUnit::Minutes.to_millis(1024), 1024 * (1000 * 60));
+    assert_eq!(TimeUnit::Hours.to_millis(1024), 1024 * (1000 * 60 * 60));
+    assert_eq!(TimeUnit::Days.to_millis(1024), 1024 * (1000 * 60 * 60 * 24));
+}
+
+#[test]
+fn test_time_unit_to_seconds() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_seconds(1024),
+        1024 / 1000 / 1000 / 1000
+    );
+    assert_eq!(TimeUnit::Microseconds.to_seconds(1024), 1024 / 1000 / 1000);
+    assert_eq!(TimeUnit::Milliseconds.to_seconds(1024), 1024 / 1000);
+    assert_eq!(TimeUnit::Seconds.to_seconds(1024), 1024);
+    assert_eq!(TimeUnit::Minutes.to_seconds(1024), 1024 * 60);
+    assert_eq!(TimeUnit::Hours.to_seconds(1024), 1024 * (60 * 60));
+    assert_eq!(TimeUnit::Days.to_seconds(1024), 1024 * (60 * 60 * 24));
+}
+
+#[test]
+fn test_time_unit_to_minutes() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_minutes(1024),
+        1024 / 1000 / 1000 / 1000 / 60
+    );
+    assert_eq!(
+        TimeUnit::Microseconds.to_minutes(1024),
+        1024 / 1000 / 1000 / 60
+    );
+    assert_eq!(TimeUnit::Milliseconds.to_minutes(1024), 1024 / 1000 / 60);
+    assert_eq!(TimeUnit::Seconds.to_minutes(1024), 1024 / 60);
+    assert_eq!(TimeUnit::Minutes.to_minutes(1024), 1024);
+    assert_eq!(TimeUnit::Hours.to_minutes(1024), 1024 * 60);
+    assert_eq!(TimeUnit::Days.to_minutes(1024), 1024 * (60 * 24));
+}
+
+#[test]
+fn test_time_unit_to_hours() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_hours(1024),
+        1024 / 1000 / 1000 / 1000 / 60 / 60
+    );
+    assert_eq!(
+        TimeUnit::Microseconds.to_hours(1024),
+        1024 / 1000 / 1000 / 60 / 60
+    );
+    assert_eq!(TimeUnit::Milliseconds.to_hours(1024), 1024 / 1000 / 60 / 60);
+    assert_eq!(TimeUnit::Seconds.to_hours(1024), 1024 / 60 / 60);
+    assert_eq!(TimeUnit::Minutes.to_hours(1024), 1024 / 60);
+    assert_eq!(TimeUnit::Hours.to_hours(1024), 1024);
+    assert_eq!(TimeUnit::Days.to_hours(1024), 1024 * 24);
+}
+
+#[test]
+fn test_time_unit_to_days() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_days(1024),
+        1024 / 1000 / 1000 / 1000 / 60 / 60 / 24
+    );
+    assert_eq!(
+        TimeUnit::Microseconds.to_days(1024),
+        1024 / 1000 / 1000 / 60 / 60 / 24
+    );
+    assert_eq!(
+        TimeUnit::Milliseconds.to_days(1024),
+        1024 / 1000 / 60 / 60 / 24
+    );
+    assert_eq!(TimeUnit::Seconds.to_days(1024), 1024 / 60 / 60 / 24);
+    assert_eq!(TimeUnit::Minutes.to_days(1024), 1024 / 60 / 24);
+    assert_eq!(TimeUnit::Hours.to_days(1024), 1024 / 24);
+    assert_eq!(TimeUnit::Days.to_days(1024), 1024);
 }
