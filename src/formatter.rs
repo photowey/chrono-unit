@@ -140,9 +140,9 @@ pub trait DateTimeFormatter {
     }
 }
 
-/// [`DefaultDateTimeFormatter`] The default `impl`s of [`DateTimeFormatter`]
+/// [`DefaultDateTimeFormatter`] The default `impl` of [`DateTimeFormatter`]
 pub struct DefaultDateTimeFormatter {
-    // [`pattern`] the pattern of activates.
+    /// [`pattern`] the activate pattern([`DateTimePattern`]) of formatter .
     pub pattern: DateTimePattern,
 }
 
