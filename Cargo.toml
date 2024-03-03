@@ -1,6 +1,6 @@
 [package]
 name = "chronounit"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["photowey"]
 license = "Apache-2.0"
@@ -11,7 +11,7 @@ description = """
 A date-time formatter and time-unit library for Rust time
 """
 readme = "README.md"
-keywords = ["timeuit", "chrono"]
+keywords = ["timeunit", "chrono"]
 categories = ["date-and-time"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
