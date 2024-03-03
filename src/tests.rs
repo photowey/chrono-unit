@@ -614,6 +614,184 @@ fn test_date_time_formatter_naive_date_time_format_timestamp() {
     );
 }
 
+// ----------------------------------------------------------------
+
+#[test]
+fn test_date_time_pattern_pattern_of() {
+    assert_eq!(
+        DateTimePattern::YyyyMmDd.pattern_of(),
+        DateTimePattern::YYYY_MM_DD
+    );
+    assert_eq!(
+        DateTimePattern::MmDdYyyy.pattern_of(),
+        DateTimePattern::MM_DD_YYYY
+    );
+    assert_eq!(
+        DateTimePattern::DdMmYyyy.pattern_of(),
+        DateTimePattern::DD_MM_YYYY
+    );
+    assert_eq!(
+        DateTimePattern::YyyyMmDdHhMm.pattern_of(),
+        DateTimePattern::YYYY_MM_DD_HH_MM
+    );
+    assert_eq!(
+        DateTimePattern::YyyyMmDdHhMmSs.pattern_of(),
+        DateTimePattern::YYYY_MM_DD_HH_MM_SS
+    );
+    assert_eq!(
+        DateTimePattern::YyyyMmDdHhMmSsSss.pattern_of(),
+        DateTimePattern::YYYY_MM_DD_HH_MM_SS_SSS
+    );
+    assert_eq!(DateTimePattern::HhMm.pattern_of(), DateTimePattern::HH_MM);
+    assert_eq!(
+        DateTimePattern::HhMmSs.pattern_of(),
+        DateTimePattern::HH_MM_SS
+    );
+    assert_eq!(
+        DateTimePattern::MonthFull.pattern_of(),
+        DateTimePattern::MONTH_FULL
+    );
+    assert_eq!(
+        DateTimePattern::MonthAbbr.pattern_of(),
+        DateTimePattern::MONTH_ABBR
+    );
+    assert_eq!(
+        DateTimePattern::WeekdayFull.pattern_of(),
+        DateTimePattern::WEEKDAY_FULL
+    );
+    assert_eq!(
+        DateTimePattern::WeekdayAbbr.pattern_of(),
+        DateTimePattern::WEEKDAY_ABBR
+    );
+    assert_eq!(DateTimePattern::AmPm.pattern_of(), DateTimePattern::AM_PM);
+    assert_eq!(
+        DateTimePattern::Timestamp.pattern_of(),
+        DateTimePattern::TIMESTAMP
+    );
+}
+
+#[test]
+fn test_date_time_pattern_value_of() {
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::YYYY_MM_DD),
+        Some(DateTimePattern::YyyyMmDd)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::MM_DD_YYYY),
+        Some(DateTimePattern::MmDdYyyy)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::DD_MM_YYYY),
+        Some(DateTimePattern::DdMmYyyy)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::YYYY_MM_DD_HH_MM),
+        Some(DateTimePattern::YyyyMmDdHhMm)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::YYYY_MM_DD_HH_MM_SS),
+        Some(DateTimePattern::YyyyMmDdHhMmSs)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::YYYY_MM_DD_HH_MM_SS_SSS),
+        Some(DateTimePattern::YyyyMmDdHhMmSsSss)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::HH_MM),
+        Some(DateTimePattern::HhMm)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::HH_MM_SS),
+        Some(DateTimePattern::HhMmSs)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::MONTH_FULL),
+        Some(DateTimePattern::MonthFull)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::MONTH_ABBR),
+        Some(DateTimePattern::MonthAbbr)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::WEEKDAY_FULL),
+        Some(DateTimePattern::WeekdayFull)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::WEEKDAY_ABBR),
+        Some(DateTimePattern::WeekdayAbbr)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::AM_PM),
+        Some(DateTimePattern::AmPm)
+    );
+    assert_eq!(
+        DateTimePattern::value_of(DateTimePattern::TIMESTAMP),
+        Some(DateTimePattern::Timestamp)
+    );
+    assert_eq!(DateTimePattern::value_of("Invalid"), None);
+}
+
+#[test]
+fn test_date_time_pattern_name_of() {
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::YYYY_MM_DD_NAME),
+        Some(DateTimePattern::YyyyMmDd)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::MM_DD_YYYY_NAME),
+        Some(DateTimePattern::MmDdYyyy)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::DD_MM_YYYY_NAME),
+        Some(DateTimePattern::DdMmYyyy)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::YYYY_MM_DD_HH_MM_NAME),
+        Some(DateTimePattern::YyyyMmDdHhMm)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::YYYY_MM_DD_HH_MM_SS_NAME),
+        Some(DateTimePattern::YyyyMmDdHhMmSs)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::YYYY_MM_DD_HH_MM_SS_SSS_NAME),
+        Some(DateTimePattern::YyyyMmDdHhMmSsSss)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::HH_MM_NAME),
+        Some(DateTimePattern::HhMm)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::HH_MM_SS_NAME),
+        Some(DateTimePattern::HhMmSs)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::MONTH_FULL_NAME),
+        Some(DateTimePattern::MonthFull)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::MONTH_ABBR_NAME),
+        Some(DateTimePattern::MonthAbbr)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::WEEKDAY_FULL_NAME),
+        Some(DateTimePattern::WeekdayFull)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::WEEKDAY_ABBR_NAME),
+        Some(DateTimePattern::WeekdayAbbr)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::AM_PM_NAME),
+        Some(DateTimePattern::AmPm)
+    );
+    assert_eq!(
+        DateTimePattern::name_of(DateTimePattern::TIMESTAMP_NAME),
+        Some(DateTimePattern::Timestamp)
+    );
+    assert_eq!(DateTimePattern::name_of("Invalid"), None);
+}
+
 // ---------------------------------------------------------------- time-unit
 
 #[test]
@@ -851,4 +1029,25 @@ fn test_time_unit_days() {
     assert_eq!(TimeUnit::Days.to_minutes(1024), 1024 * 60 * 24);
     assert_eq!(TimeUnit::Days.to_hours(1024), 1024 * 24);
     assert_eq!(TimeUnit::Days.to_days(1024), 1024);
+}
+
+#[test]
+fn test_time_unit_value_of() {
+    assert_eq!(
+        TimeUnit::value_of("Nanoseconds"),
+        Some(TimeUnit::Nanoseconds)
+    );
+    assert_eq!(
+        TimeUnit::value_of("Microseconds"),
+        Some(TimeUnit::Microseconds)
+    );
+    assert_eq!(
+        TimeUnit::value_of("Milliseconds"),
+        Some(TimeUnit::Milliseconds)
+    );
+    assert_eq!(TimeUnit::value_of("Seconds"), Some(TimeUnit::Seconds));
+    assert_eq!(TimeUnit::value_of("Minutes"), Some(TimeUnit::Minutes));
+    assert_eq!(TimeUnit::value_of("Hours"), Some(TimeUnit::Hours));
+    assert_eq!(TimeUnit::value_of("Days"), Some(TimeUnit::Days));
+    assert_eq!(TimeUnit::value_of("Invalid"), None);
 }

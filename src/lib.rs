@@ -16,13 +16,15 @@
 
 // ----------------------------------------------------------------
 
-mod formatter;
+pub mod formatter;
 #[cfg(test)]
 mod tests;
 
 // ----------------------------------------------------------------
 
 /// [`TimeUnit`] time unit.
+#[derive(Clone, Debug, PartialEq)]
+#[allow(dead_code)]
 pub enum TimeUnit {
     /// Time unit representing one thousandth of a microsecond.
     Nanoseconds,
@@ -84,6 +86,16 @@ impl TimeUnit {
 
     // ----------------------------------------------------------------
 
+    pub const NANOSECONDS_NAME: &'static str = "Nanoseconds";
+    pub const MICROSECONDS_NAME: &'static str = "Microseconds";
+    pub const MILLISECONDS_NAME: &'static str = "Milliseconds";
+    pub const SECONDS_NAME: &'static str = "Seconds";
+    pub const MINUTES_NAME: &'static str = "Minutes";
+    pub const HOURS_NAME: &'static str = "Hours";
+    pub const DAYS_NAME: &'static str = "Days";
+
+    // ----------------------------------------------------------------
+
     pub fn to_nanos(&self, amount: u64) -> u64 {
         match self {
             TimeUnit::Nanoseconds => amount,
@@ -118,5 +130,49 @@ impl TimeUnit {
 
     pub fn to_days(&self, amount: u64) -> u64 {
         self.to_hours(amount) / Self::HOURS_PER_DAY
+    }
+
+    /// [`value`]
+    ///
+    /// Retrieves the string representation of a [`TimeUnit`].
+    pub fn value(&self) -> String {
+        format!("{:?}", self)
+    }
+}
+
+impl TimeUnit {
+    /// [`value_of`]
+    ///
+    /// Returns the corresponding time unit enum based on the provided time unit name.
+    ///
+    /// # Arguments
+    /// `name`: A string slice representing the name of the time unit.
+    ///
+    /// # Returns
+    /// An `Option<Self>` containing the matched time unit if a valid name is given, otherwise returns `None`.
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    /// assert_eq!(TimeUnit::value_of("Nanoseconds"), Some(TimeUnit::Nanoseconds));
+    /// assert_eq!(TimeUnit::value_of("Microseconds"), Some(TimeUnit::Microseconds));
+    /// assert_eq!(TimeUnit::value_of("Milliseconds"), Some(TimeUnit::Milliseconds));
+    /// assert_eq!(TimeUnit::value_of("Seconds"), Some(TimeUnit::Seconds));
+    /// assert_eq!(TimeUnit::value_of("Minutes"), Some(TimeUnit::Minutes));
+    /// assert_eq!(TimeUnit::value_of("Hours"), Some(TimeUnit::Hours));
+    /// assert_eq!(TimeUnit::value_of("Days"), Some(TimeUnit::Days));
+    /// assert_eq!(TimeUnit::value_of("Invalid"), None);
+    /// ```
+    pub fn value_of(value: &str) -> Option<Self> {
+        // Use a match expression to match the time unit by its name, returning None if no match is found.
+        match value {
+            TimeUnit::NANOSECONDS_NAME => Some(TimeUnit::Nanoseconds),
+            TimeUnit::MICROSECONDS_NAME => Some(TimeUnit::Microseconds),
+            TimeUnit::MILLISECONDS_NAME => Some(TimeUnit::Milliseconds),
+            TimeUnit::SECONDS_NAME => Some(TimeUnit::Seconds),
+            TimeUnit::MINUTES_NAME => Some(TimeUnit::Minutes),
+            TimeUnit::HOURS_NAME => Some(TimeUnit::Hours),
+            TimeUnit::DAYS_NAME => Some(TimeUnit::Days),
+            _ => None,
+        }
     }
 }

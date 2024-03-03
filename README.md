@@ -1,3 +1,3 @@
 # `chrono-unit`
 
-A `date-time` library for `Rust` `time`
+A `date-time` `formatter` and `time-unit` library for `Rust` `time`
