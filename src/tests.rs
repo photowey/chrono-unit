@@ -24,12 +24,12 @@ use crate::TimeUnit;
 // ---------------------------------------------------------------- date-time pattern
 
 #[test]
-fn test_date_time_formatter_format_default() {
+fn test_date_time_formatter_format_builtin() {
     let now = "2024-03-01 02:03:04";
     let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
     let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
 
-    let dtf = DefaultDateTimeFormatter::default();
+    let dtf = DefaultDateTimeFormatter::builtin();
 
     assert_eq!(
         dtf.format_date_time_utc_default(&datetime_utc),
@@ -37,6 +37,10 @@ fn test_date_time_formatter_format_default() {
     );
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
         "2024-03-01 02:03:04"
     );
     assert_eq!(
@@ -61,6 +65,7 @@ fn test_date_time_formatter_format_new() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
         "2024-03-01"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "2024-03-01");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDd),
         "2024-03-01"
@@ -87,6 +92,10 @@ fn test_date_time_formatter_of_pattern() {
         "2024-03-01 02:03:04"
     );
     assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
         "2024-03-01 02:03:04"
     );
@@ -110,6 +119,7 @@ fn test_date_time_formatter_format_yyyy_mm_dd() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
         "2024-03-01"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "2024-03-01");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDd),
         "2024-03-01"
@@ -132,6 +142,7 @@ fn test_date_time_formatter_format_mm_dd_yyyy() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MmDdYyyy),
         "03/01/2024"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "03/01/2024");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::MmDdYyyy),
         "03/01/2024"
@@ -154,6 +165,7 @@ fn test_date_time_formatter_format_dd_mm_yyyy() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::DdMmYyyy),
         "01-03-2024"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "01-03-2024");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::DdMmYyyy),
         "01-03-2024"
@@ -174,6 +186,10 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm() {
     );
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMm),
+        "2024-03-01 02:03"
+    );
+    assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
         "2024-03-01 02:03"
     );
     assert_eq!(
@@ -198,6 +214,10 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss() {
         "2024-03-01 02:03:04"
     );
     assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
+        "2024-03-01 02:03:04"
+    );
+    assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
         "2024-03-01 02:03:04"
     );
@@ -219,6 +239,10 @@ fn test_date_time_formatter_format_yyyy_mm_dd_hh_mm_ss_sss() {
         "2024-03-01 02:03:04.789"
     );
     assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
+        "2024-03-01 02:03:04.789"
+    );
+    assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSsSss),
         "2024-03-01 02:03:04.789"
     );
@@ -236,6 +260,7 @@ fn test_date_time_formatter_format_hh_mm() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMm),
         "02:03"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "02:03");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::HhMm),
         "02:03"
@@ -254,6 +279,7 @@ fn test_date_time_formatter_format_hh_mm_ss() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
         "02:03:04"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "02:03:04");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::HhMmSs),
         "02:03:04"
@@ -272,6 +298,7 @@ fn test_date_time_formatter_format_month_full() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MonthFull),
         "March"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "March");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::MonthFull),
         "March"
@@ -290,6 +317,7 @@ fn test_date_time_formatter_format_month_abbr() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::MonthAbbr),
         "Mar"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "Mar");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::MonthAbbr),
         "Mar"
@@ -308,6 +336,7 @@ fn test_date_time_formatter_format_weekday_full() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::WeekdayFull),
         "Friday"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "Friday");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::WeekdayFull),
         "Friday"
@@ -326,6 +355,7 @@ fn test_date_time_formatter_format_weekday_abbr() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::WeekdayAbbr),
         "Fri"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "Fri");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::WeekdayAbbr),
         "Fri"
@@ -344,6 +374,7 @@ fn test_date_time_formatter_format_am_pm_am() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::AmPm),
         "AM"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "AM");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::AmPm),
         "AM"
@@ -362,6 +393,7 @@ fn test_date_time_formatter_format_am_pm_pm() {
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::AmPm),
         "PM"
     );
+    assert_eq!(dtf.format_naive_date_time_utc_default(&ndt), "PM");
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::AmPm),
         "PM"
@@ -385,6 +417,10 @@ fn test_date_time_formatter_format_timestamp() {
     assert_eq!(
         dtf.format_date_time_utc(&datetime_utc, DateTimePattern::Timestamp),
         timestamp_utc.to_string()
+    );
+    assert_eq!(
+        dtf.format_naive_date_time_utc_default(&ndt),
+        timestamp_ndt.to_string()
     );
     assert_eq!(
         dtf.format_naive_date_time_utc(&ndt, DateTimePattern::Timestamp),

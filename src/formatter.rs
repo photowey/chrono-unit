@@ -95,6 +95,17 @@ pub trait DateTimeFormatter {
 
     // ----------------------------------------------------------------
 
+    /// [`format_naive_date_time_utc_default`]
+    ///
+    /// Formats a [`NaiveDateTime`] according to the formatter default pattern(new/or_pattern).
+    ///
+    /// This function takes a reference to a [`NaiveDateTime`] object,
+    /// then formats the datetime based on the formatter activates pattern, returning a formatted string.
+    fn format_naive_date_time_utc_default(&self, datetime: &NaiveDateTime) -> String {
+        let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(datetime);
+        self.format_date_time_utc(&datetime_utc, self.activated_pattern())
+    }
+
     /// [`format_naive_date_time`]
     ///
     /// Formats a [`NaiveDateTime`] according to the specified pattern.
@@ -173,7 +184,7 @@ impl DateTimeFormatter for DefaultDateTimeFormatter {
 
 #[allow(dead_code)]
 impl DefaultDateTimeFormatter {
-    pub fn default() -> Self {
+    pub fn builtin() -> Self {
         DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSs)
     }
 
