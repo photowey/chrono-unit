@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["photowey"]
 license = "Apache-2.0"
+documentation = "https://docs.rs/chronounit"
 repository = "https://github.com/photowey/chrono-unit"
 homepage = "https://github.com/photowey/chrono-unit"
 description = """
