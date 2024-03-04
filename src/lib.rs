@@ -445,8 +445,7 @@ impl TimeUnit {
     where
         F: Fn(Duration),
     {
-        let millis = self.to_millis(amount);
-        let duration = Duration::from_millis(millis);
+        let duration = self.to_duration(amount);
         callback(duration);
     }
 
@@ -483,8 +482,7 @@ impl TimeUnit {
     where
         F: Fn(chrono::Duration),
     {
-        let millis = self.to_millis(amount);
-        let duration = chrono::Duration::milliseconds(millis as i64);
+        let duration = self.to_chrono_duration(amount);
         callback(duration);
     }
 }
