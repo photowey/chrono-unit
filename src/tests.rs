@@ -1087,3 +1087,14 @@ fn test_time_unit_value_of() {
     assert_eq!(TimeUnit::value_of("Days"), Some(TimeUnit::Days));
     assert_eq!(TimeUnit::value_of("Invalid"), None);
 }
+
+#[test]
+fn test_time_unit_value() {
+    assert_eq!(TimeUnit::Nanoseconds.value(), "Nanoseconds");
+    assert_eq!(TimeUnit::Microseconds.value(), "Microseconds");
+    assert_eq!(TimeUnit::Milliseconds.value(), "Milliseconds");
+    assert_eq!(TimeUnit::Seconds.value(), "Seconds");
+    assert_eq!(TimeUnit::Minutes.value(), "Minutes");
+    assert_eq!(TimeUnit::Hours.value(), "Hours");
+    assert_eq!(TimeUnit::Days.value(), "Days");
+}

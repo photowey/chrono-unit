@@ -135,6 +135,14 @@ impl DateTimePattern {
     /// [`value`]
     ///
     /// Retrieves the string representation of a [`DateTimePattern`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::formatter::pattern::DateTimePattern;
+    ///
+    /// assert_eq!(DateTimePattern::YyyyMmDdHhMmSs.value(), "YyyyMmDdHhMmSs");
+    /// ```
     pub fn value(&self) -> String {
         format!("{:?}", self)
     }
