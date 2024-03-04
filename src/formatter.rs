@@ -34,15 +34,16 @@ pub trait DateTimeFormatter {
     ///
     /// # Examples
     /// ```rust
-    ///     use chrono::NaiveDateTime;
-    ///     use chronounit::formatter::DateTimeFormatter;
-    ///     use chronounit::formatter::pattern::DateTimePattern;
-    ///     use crate::chronounit::formatter::DefaultDateTimeFormatter;
-    ///     let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
-    ///     let dtf = dtf.of_pattern(DateTimePattern::YyyyMmDdHhMmSs);
+    /// use chrono::NaiveDateTime;
+    /// use chronounit::formatter::DateTimeFormatter;
+    /// use chronounit::formatter::pattern::DateTimePattern;
+    /// use crate::chronounit::formatter::DefaultDateTimeFormatter;
     ///
-    ///     assert_eq!(dtf.activated_pattern().value(), DateTimePattern::YyyyMmDdHhMmSs.value());
-    ///     assert_eq!(dtf.activated_pattern(), DateTimePattern::YyyyMmDdHhMmSs);
+    /// let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDd);
+    /// let dtf = dtf.of_pattern(DateTimePattern::YyyyMmDdHhMmSs);
+    ///
+    /// assert_eq!(dtf.activated_pattern().value(), DateTimePattern::YyyyMmDdHhMmSs.value());
+    /// assert_eq!(dtf.activated_pattern(), DateTimePattern::YyyyMmDdHhMmSs);
     /// ```
     fn of_pattern(&self, pattern: DateTimePattern) -> Box<dyn DateTimeFormatter>;
 

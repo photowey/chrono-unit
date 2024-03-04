@@ -30,7 +30,7 @@ pub enum TimeUnit {
     Nanoseconds,
     /// Time unit representing one thousandth of a millisecond.
     Microseconds,
-    // Time unit representing one thousandth of a second.
+    /// Time unit representing one thousandth of a second.
     Milliseconds,
     /// Time unit representing one second.
     Seconds,
@@ -96,6 +96,28 @@ impl TimeUnit {
 
     // ----------------------------------------------------------------
 
+    /// [`to_nanos`]
+    /// Converts the given time amount to nanoseconds.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in nanoseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_nanos(1024), 1024);
+    /// assert_eq!(TimeUnit::Microseconds.to_nanos(1024), 1024 * 1000);
+    /// assert_eq!(TimeUnit::Milliseconds.to_nanos(1024), 1024 * (1000 * 1000));
+    /// assert_eq!( TimeUnit::Seconds.to_nanos(1024), 1024 * (1000 * 1000 * 1000));
+    /// assert_eq!(TimeUnit::Minutes.to_nanos(1024), 1024 * (1000 * 1000 * 1000 * 60));
+    /// assert_eq!(TimeUnit::Hours.to_nanos(1024), 1024 * (1000 * 1000 * 1000 * 60 * 60));
+    /// assert_eq!(TimeUnit::Days.to_nanos(1024), 1024 * (1000 * 1000 * 1000 * 60 * 60 * 24));
+    /// ```
     pub fn to_nanos(&self, amount: u64) -> u64 {
         match self {
             TimeUnit::Nanoseconds => amount,
@@ -108,33 +130,182 @@ impl TimeUnit {
         }
     }
 
+    /// [`to_micros`]
+    /// Converts the given time amount to microseconds.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in microseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_micros(1024), 1024 / 1000);
+    /// assert_eq!(TimeUnit::Microseconds.to_micros(1024), 1024);
+    /// assert_eq!(TimeUnit::Milliseconds.to_micros(1024), 1024 * 1000);
+    /// assert_eq!(TimeUnit::Seconds.to_micros(1024), 1024 * (1000 * 1000));
+    /// assert_eq!(TimeUnit::Minutes.to_micros(1024), 1024 * (1000 * 1000 * 60));
+    /// assert_eq!(TimeUnit::Hours.to_micros(1024), 1024 * (1000 * 1000 * 60 * 60));
+    /// assert_eq!( TimeUnit::Days.to_micros(1024), 1024 * (1000 * 1000 * 60 * 60 * 24));
+    /// ```
     pub fn to_micros(&self, amount: u64) -> u64 {
         self.to_nanos(amount) / Self::NANOS_PER_MICROSECOND
     }
 
+    /// [`to_millis`]
+    /// Converts the given time amount to milliseconds.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in milliseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_millis(1024), 1024 / 1000 / 1000);
+    /// assert_eq!(TimeUnit::Microseconds.to_millis(1024), 1024 / 1000);
+    /// assert_eq!(TimeUnit::Milliseconds.to_millis(1024), 1024);
+    /// assert_eq!(TimeUnit::Seconds.to_millis(1024), 1024 * 1000);
+    /// assert_eq!(TimeUnit::Minutes.to_millis(1024), 1024 * (1000 * 60));
+    /// assert_eq!(TimeUnit::Hours.to_millis(1024), 1024 * (1000 * 60 * 60));
+    /// assert_eq!(TimeUnit::Days.to_millis(1024), 1024 * (1000 * 60 * 60 * 24));
+    /// ```
     pub fn to_millis(&self, amount: u64) -> u64 {
         self.to_nanos(amount) / Self::NANOS_PER_MILLISECOND
     }
 
+    /// [`to_seconds`]
+    /// Converts the given time amount to seconds.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in seconds.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_seconds(1024), 1024 / 1000 / 1000 / 1000);
+    /// assert_eq!(TimeUnit::Microseconds.to_seconds(1024), 1024 / 1000 / 1000);
+    /// assert_eq!(TimeUnit::Milliseconds.to_seconds(1024), 1024 / 1000);
+    /// assert_eq!(TimeUnit::Seconds.to_seconds(1024), 1024);
+    /// assert_eq!(TimeUnit::Minutes.to_seconds(1024), 1024 * 60);
+    /// assert_eq!(TimeUnit::Hours.to_seconds(1024), 1024 * (60 * 60));
+    /// assert_eq!(TimeUnit::Days.to_seconds(1024), 1024 * (60 * 60 * 24));
+    /// ```
     pub fn to_seconds(&self, amount: u64) -> u64 {
         self.to_nanos(amount) / Self::NANOS_PER_SECOND
     }
 
+    /// [`to_minutes`]
+    /// Converts the given time amount to minutes.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in minutes.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_minutes(1024), 1024 / 1000 / 1000 / 1000 / 60);
+    /// assert_eq!(TimeUnit::Microseconds.to_minutes(1024), 1024 / 1000 / 1000 / 60);
+    /// assert_eq!(TimeUnit::Milliseconds.to_minutes(1024), 1024 / 1000 / 60);
+    /// assert_eq!(TimeUnit::Seconds.to_minutes(1024), 1024 / 60);
+    /// assert_eq!(TimeUnit::Minutes.to_minutes(1024), 1024);
+    /// assert_eq!(TimeUnit::Hours.to_minutes(1024), 1024 * 60);
+    /// assert_eq!(TimeUnit::Days.to_minutes(1024), 1024 * (60 * 24));
+    /// ```
     pub fn to_minutes(&self, amount: u64) -> u64 {
         self.to_seconds(amount) / Self::SECONDS_PER_MINUTE
     }
 
+    /// [`to_hours`]
+    /// Converts the given time amount to hours.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in hours.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_hours(1024), 1024 / 1000 / 1000 / 1000 / 60 / 60);
+    /// assert_eq!(TimeUnit::Microseconds.to_hours(1024), 1024 / 1000 / 1000 / 60 / 60);
+    /// assert_eq!(TimeUnit::Milliseconds.to_hours(1024), 1024 / 1000 / 60 / 60);
+    /// assert_eq!(TimeUnit::Seconds.to_hours(1024), 1024 / 60 / 60);
+    /// assert_eq!(TimeUnit::Minutes.to_hours(1024), 1024 / 60);
+    /// assert_eq!(TimeUnit::Hours.to_hours(1024), 1024);
+    /// assert_eq!(TimeUnit::Days.to_hours(1024), 1024 * 24);
+    /// ```
     pub fn to_hours(&self, amount: u64) -> u64 {
         self.to_minutes(amount) / Self::MINUTES_PER_HOUR
     }
 
+    /// [`to_days`]
+    /// Converts the given time amount to days.
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in days.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_days(1024), 1024 / 1000 / 1000 / 1000 / 60 / 60 / 24);
+    /// assert_eq!(TimeUnit::Microseconds.to_days(1024), 1024 / 1000 / 1000 / 60 / 60 / 24);
+    /// assert_eq!(TimeUnit::Milliseconds.to_days(1024), 1024 / 1000 / 60 / 60 / 24);
+    /// assert_eq!(TimeUnit::Seconds.to_days(1024), 1024 / 60 / 60 / 24);
+    /// assert_eq!(TimeUnit::Minutes.to_days(1024), 1024 / 60 / 24);
+    /// assert_eq!(TimeUnit::Hours.to_days(1024), 1024 / 24);
+    /// assert_eq!(TimeUnit::Days.to_days(1024), 1024);
+    /// ```
     pub fn to_days(&self, amount: u64) -> u64 {
         self.to_hours(amount) / Self::HOURS_PER_DAY
     }
 
     /// [`value`]
     ///
-    /// Retrieves the string representation of a [`TimeUnit`].
+    /// Retrieves the string representation of this [`TimeUnit`].
+    ///
+    /// # Returns
+    /// A `String` which represents the formatted value of the object.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.value(), "Nanoseconds");
+    /// assert_eq!(TimeUnit::Microseconds.value(), "Microseconds");
+    /// assert_eq!(TimeUnit::Milliseconds.value(), "Milliseconds");
+    /// assert_eq!(TimeUnit::Seconds.value(), "Seconds");
+    /// assert_eq!(TimeUnit::Minutes.value(), "Minutes");
+    /// assert_eq!(TimeUnit::Hours.value(), "Hours");
+    /// assert_eq!(TimeUnit::Days.value(), "Days");
+    /// ```
     pub fn value(&self) -> String {
         format!("{:?}", self)
     }
@@ -143,13 +314,13 @@ impl TimeUnit {
 impl TimeUnit {
     /// [`value_of`]
     ///
-    /// Returns the corresponding time unit enum based on the provided time unit name.
+    /// Returns the corresponding time unit enum based on the provided [`TimeUnit`] name.
     ///
     /// # Arguments
-    /// `name`: A string slice representing the name of the time unit.
+    /// `value` - A string slice representing the value/name of the [`TimeUnit`].
     ///
     /// # Returns
-    /// An `Option<Self>` containing the matched time unit if a valid name is given, otherwise returns `None`.
+    /// An `Option<Self>` containing the matched [`TimeUnit`] if a valid value/name is given, otherwise returns `None`.
     ///
     /// ```rust
     /// use chronounit::TimeUnit;
@@ -163,7 +334,6 @@ impl TimeUnit {
     /// assert_eq!(TimeUnit::value_of("Invalid"), None);
     /// ```
     pub fn value_of(value: &str) -> Option<Self> {
-        // Use a match expression to match the time unit by its name, returning None if no match is found.
         match value {
             TimeUnit::NANOSECONDS_NAME => Some(TimeUnit::Nanoseconds),
             TimeUnit::MICROSECONDS_NAME => Some(TimeUnit::Microseconds),
