@@ -16,6 +16,9 @@
 
 // ----------------------------------------------------------------
 
+use std::thread;
+use std::time::Duration;
+
 pub mod formatter;
 #[cfg(test)]
 mod tests;
@@ -58,6 +61,10 @@ impl TimeUnit {
     pub const MINUTES_PER_HOUR: u64 = 60;
     /// 24
     pub const HOURS_PER_DAY: u64 = 24;
+
+    pub const SECONDS_PER_HOUR: u64 = Self::SECONDS_PER_MINUTE * Self::MINUTES_PER_HOUR;
+    pub const SECONDS_PER_DAY: u64 =
+        Self::SECONDS_PER_MINUTE * Self::MINUTES_PER_HOUR * Self::HOURS_PER_DAY;
 
     // ----------------------------------------------------------------
 
@@ -286,6 +293,76 @@ impl TimeUnit {
         self.to_hours(amount) / Self::HOURS_PER_DAY
     }
 
+    /// [`to_duration`]
+    /// Converts the given time amount to a `std` [`Duration`].
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in [`Duration`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use std::time::Duration;
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_duration(100), Duration::from_nanos(100));
+    /// assert_eq!(TimeUnit::Microseconds.to_duration(100), Duration::from_micros(100));
+    /// assert_eq!(TimeUnit::Milliseconds.to_duration(100), Duration::from_millis(100));
+    /// assert_eq!(TimeUnit::Seconds.to_duration(1), Duration::from_secs(1));
+    /// assert_eq!(TimeUnit::Minutes.to_duration(1), Duration::from_secs(60));
+    /// assert_eq!(TimeUnit::Hours.to_duration(1), Duration::from_secs(60 * 60));
+    /// assert_eq!(TimeUnit::Days.to_duration(1), Duration::from_secs(60 * 60 * 24));
+    /// ```
+    pub fn to_duration(&self, amount: u64) -> Duration {
+        match self {
+            TimeUnit::Nanoseconds => Duration::from_nanos(amount),
+            TimeUnit::Microseconds => Duration::from_micros(amount),
+            TimeUnit::Milliseconds => Duration::from_millis(amount),
+            TimeUnit::Seconds => Duration::from_secs(amount),
+            TimeUnit::Minutes => Duration::from_secs(amount * TimeUnit::SECONDS_PER_MINUTE),
+            TimeUnit::Hours => Duration::from_secs(amount * TimeUnit::SECONDS_PER_HOUR),
+            TimeUnit::Days => Duration::from_secs(amount * TimeUnit::SECONDS_PER_DAY),
+        }
+    }
+
+    /// [`to_chrono_duration`]
+    /// Converts the given time amount to a `std` [`Duration`].
+    ///
+    /// # Arguments
+    /// `amount` - The original time amount, with the unit specified by the caller.
+    ///
+    /// # Returns
+    /// The converted time amount in [`Duration`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use chrono::Duration;
+    /// use chronounit::TimeUnit;
+    ///
+    /// assert_eq!(TimeUnit::Nanoseconds.to_chrono_duration(100), Duration::nanoseconds(100));
+    /// assert_eq!(TimeUnit::Microseconds.to_chrono_duration(100), Duration::microseconds(100));
+    /// assert_eq!(TimeUnit::Milliseconds.to_chrono_duration(100), Duration::milliseconds(100));
+    /// assert_eq!(TimeUnit::Seconds.to_chrono_duration(1), Duration::seconds(1));
+    /// assert_eq!(TimeUnit::Minutes.to_chrono_duration(1), Duration::minutes(1));
+    /// assert_eq!(TimeUnit::Hours.to_chrono_duration(1), Duration::hours(1));
+    /// assert_eq!(TimeUnit::Days.to_chrono_duration(1), Duration::days(1));
+    /// ```
+    pub fn to_chrono_duration(&self, amount: u64) -> chrono::Duration {
+        match self {
+            TimeUnit::Nanoseconds => chrono::Duration::nanoseconds(amount as i64),
+            TimeUnit::Microseconds => chrono::Duration::microseconds(amount as i64),
+            TimeUnit::Milliseconds => chrono::Duration::milliseconds(amount as i64),
+            TimeUnit::Seconds => chrono::Duration::seconds(amount as i64),
+            TimeUnit::Minutes => chrono::Duration::minutes(amount as i64),
+            TimeUnit::Hours => chrono::Duration::hours(amount as i64),
+            TimeUnit::Days => chrono::Duration::days(amount as i64),
+        }
+    }
+
     /// [`value`]
     ///
     /// Retrieves the string representation of this [`TimeUnit`].
@@ -308,6 +385,107 @@ impl TimeUnit {
     /// ```
     pub fn value(&self) -> String {
         format!("{:?}", self)
+    }
+
+    /// [`sleep`]
+    ///
+    /// Sleeps for a specified amount of time according to the [`TimeUnit`],
+    ///
+    /// # Arguments
+    ///
+    /// `amount` - A u64 parameter representing the amount of time to sleep, according to the [`TimeUnit`].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use std::time::Duration;
+    /// use chronounit::TimeUnit;
+    ///
+    /// let start = std::time::Instant::now();
+    /// TimeUnit::Milliseconds.sleep(1024);
+    /// let duration = start.elapsed();
+    /// assert!(duration >= Duration::from_millis(1024));
+    /// ```
+    pub fn sleep(&self, amount: u64) {
+        let millis = self.to_millis(amount);
+        let duration = Duration::from_millis(millis);
+        thread::sleep(duration);
+    }
+
+    /// [`closure_sleep`]
+    ///
+    /// Sleeps for a specified amount of time according to the [`TimeUnit`],
+    /// then executes a custom sleep function provided by the user/caller.
+    ///
+    /// This function converts the given `amount` of time to milliseconds based on the [`TimeUnit`] enum,
+    /// constructs a Duration, and then passes it to the provided closure for custom sleep execution.
+    ///
+    /// # Arguments
+    ///
+    /// `amount` - A u64 parameter representing the amount of time to sleep, according to the [`TimeUnit`].
+    /// `callback` - A closure that takes a [`std::time::Duration`] parameter and performs custom sleep actions.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use std::thread;
+    /// use std::time::Duration;
+    /// use chronounit::TimeUnit;
+    /// let start = std::time::Instant::now();
+    ///
+    /// TimeUnit::Milliseconds.closure_sleep(1024, |x| {
+    ///     assert_eq!(x, Duration::from_millis(1024));
+    ///     thread::sleep(x);
+    /// });
+    ///
+    /// let duration = start.elapsed();
+    /// assert!(duration >= Duration::from_millis(1024));
+    /// ```
+    pub fn closure_sleep<F>(&self, amount: u64, callback: F)
+    where
+        F: Fn(Duration),
+    {
+        let millis = self.to_millis(amount);
+        let duration = Duration::from_millis(millis);
+        callback(duration);
+    }
+
+    /// [`closure_chrono_sleep`]
+    ///
+    /// Sleeps for a specified amount of time according to the [`TimeUnit`],
+    /// then executes a custom sleep function provided by the user/caller.
+    ///
+    /// This function converts the given `amount` of time to milliseconds based on the [`TimeUnit`] enum,
+    /// constructs a Duration, and then passes it to the provided closure for custom sleep execution.
+    ///
+    /// # Arguments
+    ///
+    /// `amount` - A u64 parameter representing the amount of time to sleep, according to the [`TimeUnit`].
+    /// `callback` - A closure that takes a [`chrono::Duration`] parameter and performs custom sleep actions.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use std::thread;
+    /// use std::time::Duration;
+    /// use chronounit::TimeUnit;
+    /// let start = std::time::Instant::now();
+    ///
+    /// TimeUnit::Milliseconds.closure_chrono_sleep(1024, |x| {
+    ///     assert_eq!(x, chrono::Duration::milliseconds(1024));
+    ///     thread::sleep(Duration::from_millis(x.num_milliseconds() as u64));
+    /// });
+    ///
+    /// let duration = start.elapsed();
+    /// assert!(duration >= Duration::from_millis(1024));
+    /// ```
+    pub fn closure_chrono_sleep<F>(&self, amount: u64, callback: F)
+    where
+        F: Fn(chrono::Duration),
+    {
+        let millis = self.to_millis(amount);
+        let duration = chrono::Duration::milliseconds(millis as i64);
+        callback(duration);
     }
 }
 

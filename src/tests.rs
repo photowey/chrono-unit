@@ -16,6 +16,9 @@
 
 // ----------------------------------------------------------------
 
+use std::thread;
+use std::time::Duration;
+
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 
 use crate::formatter::{pattern::DateTimePattern, DateTimeFormatter, DefaultDateTimeFormatter};
@@ -947,6 +950,97 @@ fn test_time_unit_to_days() {
     assert_eq!(TimeUnit::Minutes.to_days(1024), 1024 / 60 / 24);
     assert_eq!(TimeUnit::Hours.to_days(1024), 1024 / 24);
     assert_eq!(TimeUnit::Days.to_days(1024), 1024);
+}
+
+#[test]
+fn test_to_duration() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_duration(100),
+        Duration::from_nanos(100)
+    );
+    assert_eq!(
+        TimeUnit::Microseconds.to_duration(100),
+        Duration::from_micros(100)
+    );
+    assert_eq!(
+        TimeUnit::Milliseconds.to_duration(100),
+        Duration::from_millis(100)
+    );
+    assert_eq!(TimeUnit::Seconds.to_duration(1), Duration::from_secs(1));
+    assert_eq!(TimeUnit::Minutes.to_duration(1), Duration::from_secs(60));
+    assert_eq!(TimeUnit::Hours.to_duration(1), Duration::from_secs(60 * 60));
+    assert_eq!(
+        TimeUnit::Days.to_duration(1),
+        Duration::from_secs(60 * 60 * 24)
+    );
+}
+
+#[test]
+fn test_to_chrono_duration() {
+    assert_eq!(
+        TimeUnit::Nanoseconds.to_chrono_duration(1024),
+        chrono::Duration::nanoseconds(1024)
+    );
+    assert_eq!(
+        TimeUnit::Microseconds.to_chrono_duration(1024),
+        chrono::Duration::microseconds(1024)
+    );
+    assert_eq!(
+        TimeUnit::Milliseconds.to_chrono_duration(1024),
+        chrono::Duration::milliseconds(1024)
+    );
+    assert_eq!(
+        TimeUnit::Seconds.to_chrono_duration(1024),
+        chrono::Duration::seconds(1024)
+    );
+    assert_eq!(
+        TimeUnit::Minutes.to_chrono_duration(1024),
+        chrono::Duration::minutes(1024)
+    );
+    assert_eq!(
+        TimeUnit::Hours.to_chrono_duration(1024),
+        chrono::Duration::hours(1024)
+    );
+    assert_eq!(
+        TimeUnit::Days.to_chrono_duration(1024),
+        chrono::Duration::days(1024)
+    );
+}
+
+// ----------------------------------------------------------------
+
+#[test]
+fn test_time_unit_sleep() {
+    let start = std::time::Instant::now();
+    TimeUnit::Milliseconds.sleep(1024);
+    let duration = start.elapsed();
+    assert!(duration >= Duration::from_millis(1024));
+}
+
+#[test]
+fn test_time_unit_closure_sleep() {
+    let start = std::time::Instant::now();
+
+    TimeUnit::Milliseconds.closure_sleep(1024, |x| {
+        assert_eq!(x, Duration::from_millis(1024));
+        thread::sleep(x);
+    });
+
+    let duration = start.elapsed();
+    assert!(duration >= Duration::from_millis(1024));
+}
+
+#[test]
+fn test_time_unit_closure_chrono_sleep() {
+    let start = std::time::Instant::now();
+
+    TimeUnit::Milliseconds.closure_chrono_sleep(1024, |x| {
+        assert_eq!(x, chrono::Duration::milliseconds(1024));
+        thread::sleep(Duration::from_millis(x.num_milliseconds() as u64));
+    });
+
+    let duration = start.elapsed();
+    assert!(duration >= Duration::from_millis(1024));
 }
 
 // ----------------------------------------------------------------
