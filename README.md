@@ -167,3 +167,56 @@ assert_eq!(
   "2024-03-01 02:03:04"
 );
 ```
+
+### 2.3.`Sleep`
+
+#### 2.3.1.`to_duration`
+
+```rust
+assert_eq!(TimeUnit::Nanoseconds.to_duration(100), Duration::from_nanos(100));
+```
+
+#### 2.3.2.`to_chrono_duration`
+
+```rust
+assert_eq!(TimeUnit::Nanoseconds.to_chrono_duration(1024), chrono::Duration::nanoseconds(1024));
+```
+
+#### 2.3.3.`sleep`
+
+```rust
+let start = std::time::Instant::now();
+TimeUnit::Milliseconds.sleep(1024);
+let duration = start.elapsed();
+
+assert!(duration >= Duration::from_millis(1024));
+```
+
+#### 2.3.4.`closure_sleep`
+
+```rust
+let start = std::time::Instant::now();
+
+TimeUnit::Milliseconds.closure_sleep(1024, | x| {
+assert_eq ! (x, Duration::from_millis(1024));
+thread::sleep(x);
+});
+
+let duration = start.elapsed();
+assert!(duration >= Duration::from_millis(1024));
+```
+
+#### 2.3.5.`closure_chrono_sleep`
+
+```rust
+let start = std::time::Instant::now();
+
+TimeUnit::Milliseconds.closure_chrono_sleep(1024, | x| {
+assert_eq ! (x, chrono::Duration::milliseconds(1024));
+thread::sleep(Duration::from_millis(x.num_milliseconds() as u64));
+});
+
+let duration = start.elapsed();
+assert!(duration >= Duration::from_millis(1024));
+```
+
