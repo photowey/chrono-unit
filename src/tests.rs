@@ -1183,6 +1183,101 @@ fn test_time_unit_value_of() {
 }
 
 #[test]
+fn test_time_unit_insensitive_case_value_of() {
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Nanoseconds"),
+        Some(TimeUnit::Nanoseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Microseconds"),
+        Some(TimeUnit::Microseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Milliseconds"),
+        Some(TimeUnit::Milliseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Seconds"),
+        Some(TimeUnit::Seconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Minutes"),
+        Some(TimeUnit::Minutes)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Hours"),
+        Some(TimeUnit::Hours)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("Days"),
+        Some(TimeUnit::Days)
+    );
+    assert_eq!(TimeUnit::insensitive_case_value_of("Invalid"), None);
+
+    // ----------------------------------------------------------------
+
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("NANOSECONDS"),
+        Some(TimeUnit::Nanoseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("MICROSECONDS"),
+        Some(TimeUnit::Microseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("MILLISECONDS"),
+        Some(TimeUnit::Milliseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("SECONDS"),
+        Some(TimeUnit::Seconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("MINUTES"),
+        Some(TimeUnit::Minutes)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("HOURS"),
+        Some(TimeUnit::Hours)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("DAYS"),
+        Some(TimeUnit::Days)
+    );
+
+    // ----------------------------------------------------------------
+
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("nanoseconds"),
+        Some(TimeUnit::Nanoseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("microseconds"),
+        Some(TimeUnit::Microseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("milliseconds"),
+        Some(TimeUnit::Milliseconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("seconds"),
+        Some(TimeUnit::Seconds)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("minutes"),
+        Some(TimeUnit::Minutes)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("hours"),
+        Some(TimeUnit::Hours)
+    );
+    assert_eq!(
+        TimeUnit::insensitive_case_value_of("days"),
+        Some(TimeUnit::Days)
+    );
+}
+
+#[test]
 fn test_time_unit_value() {
     assert_eq!(TimeUnit::Nanoseconds.value(), "Nanoseconds");
     assert_eq!(TimeUnit::Microseconds.value(), "Microseconds");

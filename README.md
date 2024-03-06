@@ -2,22 +2,19 @@
 
 A `date-time` `formatter` and `time-unit` library for `Rust` `time`
 
-## 1.`Items`
+[APIs Documents](https://docs.rs/chronounit)
 
-### 1.1.`Structs`
+## 1.`Usage`
 
-- [`formatter::DefaultDateTimeFormatter`](./src/formatter.rs)
+Add this to your `Cargo.toml`:
 
-### 1.2.`Enums`
+```toml
+[dependencies]
+chrono = "0.4"
+chronounit = "0.2"
+```
 
-- [`TimeUnit`](./src/lib.rs)
-- [`formatter::pattern::DateTimePattern`](./src/formatter/pattern.rs)
-
-### 1.3.`Traits`
-
-- [`formatter::DateTimeFormatter`](./src/formatter.rs)
-
-## 2.`Usage`
+## 2.`APIs`
 
 ### 2.1.`TimeUnit`
 
@@ -28,8 +25,6 @@ A `date-time` `formatter` and `time-unit` library for `Rust` `time`
   - ```rust
     TimeUnit::Nanoseconds.to_nanos(1024)
     ```
-
-  -
 
 - `to_micros`
 
@@ -46,10 +41,27 @@ A `date-time` `formatter` and `time-unit` library for `Rust` `time`
 - `value`
 
   - ```rust
-    TimeUnit::value_of("Nanoseconds")
+    assert_eq!(TimeUnit::Seconds.value(), "Seconds");
     ```
 
-  -
+
+- `value_of`
+
+  - ```rust
+    assert_eq!(TimeUnit::value_of("Seconds"), Some(TimeUnit::Seconds))
+    ```
+
+- `insensitive_case_value_of`
+
+  - ```rust
+    assert_eq!(TimeUnit::insensitive_case_value_of("Seconds"), Some(TimeUnit::Seconds));
+    
+    assert_eq!(TimeUnit::insensitive_case_value_of("SECONDS"), Some(TimeUnit::Seconds));
+    
+    assert_eq!(TimeUnit::insensitive_case_value_of("seconds"), Some(TimeUnit::Seconds));
+    ```
+
+
 
 ### 2.2.`Formatter`
 
