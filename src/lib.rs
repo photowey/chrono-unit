@@ -101,6 +101,14 @@ impl TimeUnit {
     pub const HOURS_NAME: &'static str = "Hours";
     pub const DAYS_NAME: &'static str = "Days";
 
+    pub const NANOSECONDS_LOWER_CASE_NAME: &'static str = "nanoseconds";
+    pub const MICROSECONDS_LOWER_CASE_NAME: &'static str = "microseconds";
+    pub const MILLISECONDS_LOWER_CASE_NAME: &'static str = "milliseconds";
+    pub const SECONDS_LOWER_CASE_NAME: &'static str = "seconds";
+    pub const MINUTES_LOWER_CASE_NAME: &'static str = "minutes";
+    pub const HOURS_LOWER_CASE_NAME: &'static str = "hours";
+    pub const DAYS_LOWER_CASE_NAME: &'static str = "days";
+
     // ----------------------------------------------------------------
 
     /// [`to_nanos`]
@@ -490,7 +498,7 @@ impl TimeUnit {
 impl TimeUnit {
     /// [`value_of`]
     ///
-    /// Returns the corresponding time unit enum based on the provided [`TimeUnit`] name.
+    /// Returns the corresponding [`TimeUnit`] enum based on the provided [`TimeUnit`] value/name.
     ///
     /// # Arguments
     /// `value` - A string slice representing the value/name of the [`TimeUnit`].
@@ -518,6 +526,57 @@ impl TimeUnit {
             TimeUnit::MINUTES_NAME => Some(TimeUnit::Minutes),
             TimeUnit::HOURS_NAME => Some(TimeUnit::Hours),
             TimeUnit::DAYS_NAME => Some(TimeUnit::Days),
+            _ => None,
+        }
+    }
+
+    /// [`insensitive_case_value_of`]
+    ///
+    /// Returns the corresponding [`TimeUnit`] enum based on the provided [`TimeUnit`] value/name.
+    /// performing a case-insensitive match.
+    ///
+    /// # Arguments
+    /// `value` - A string slice representing the value/name of the [`TimeUnit`].
+    ///
+    /// # Returns
+    /// An `Option<Self>` containing the matched [`TimeUnit`] if a valid value/name is given, otherwise returns `None`.
+    ///
+    /// ```rust
+    /// use chronounit::TimeUnit;
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Nanoseconds"), Some(TimeUnit::Nanoseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Microseconds"), Some(TimeUnit::Microseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Milliseconds"), Some(TimeUnit::Milliseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Seconds"), Some(TimeUnit::Seconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Minutes"), Some(TimeUnit::Minutes));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Hours"), Some(TimeUnit::Hours));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Days"), Some(TimeUnit::Days));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("Invalid"), None);
+    ///
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("NANOSECONDS"), Some(TimeUnit::Nanoseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("MICROSECONDS"), Some(TimeUnit::Microseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("MILLISECONDS"), Some(TimeUnit::Milliseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("SECONDS"), Some(TimeUnit::Seconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("MINUTES"), Some(TimeUnit::Minutes));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("HOURS"), Some(TimeUnit::Hours));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("DAYS"), Some(TimeUnit::Days));
+    ///
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("nanoseconds"), Some(TimeUnit::Nanoseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("microseconds"), Some(TimeUnit::Microseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("milliseconds"), Some(TimeUnit::Milliseconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("seconds"), Some(TimeUnit::Seconds));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("minutes"), Some(TimeUnit::Minutes));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("hours"), Some(TimeUnit::Hours));
+    /// assert_eq!(TimeUnit::insensitive_case_value_of("days"), Some(TimeUnit::Days));
+    /// ```
+    pub fn insensitive_case_value_of(value: &str) -> Option<Self> {
+        match value.to_lowercase().as_str() {
+            TimeUnit::NANOSECONDS_LOWER_CASE_NAME => Some(TimeUnit::Nanoseconds),
+            TimeUnit::MICROSECONDS_LOWER_CASE_NAME => Some(TimeUnit::Microseconds),
+            TimeUnit::MILLISECONDS_LOWER_CASE_NAME => Some(TimeUnit::Milliseconds),
+            TimeUnit::SECONDS_LOWER_CASE_NAME => Some(TimeUnit::Seconds),
+            TimeUnit::MINUTES_LOWER_CASE_NAME => Some(TimeUnit::Minutes),
+            TimeUnit::HOURS_LOWER_CASE_NAME => Some(TimeUnit::Hours),
+            TimeUnit::DAYS_LOWER_CASE_NAME => Some(TimeUnit::Days),
             _ => None,
         }
     }
