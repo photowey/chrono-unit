@@ -20,120 +20,118 @@
 #[derive(Clone, Debug, PartialEq)]
 #[allow(dead_code)]
 pub enum DateTimePattern {
-    /// [`YyyyMmDd`] `%Y-%m-%d`
+    /// `YyyyMmDd` `%Y-%m-%d`
     YyyyMmDd,
-    /// [`MmDdYyyy`] `%m/%d/%Y`
+    /// `MmDdYyyy` `%m/%d/%Y`
     MmDdYyyy,
-    /// [`DdMmYyyy`] `%d-%m-%Y`
+    /// `DdMmYyyy` `%d-%m-%Y`
     DdMmYyyy,
 
-    /// [`YyyyMmDdHhMm`] `%Y-%m-%d %H:%M`
+    /// `YyyyMmDdHhMm` `%Y-%m-%d %H:%M`
     YyyyMmDdHhMm,
-    /// [`YyyyMmDdHhMmSs`] `%Y-%m-%d %H:%M:%S`
+    /// `YyyyMmDdHhMmSs` `%Y-%m-%d %H:%M:%S`
     YyyyMmDdHhMmSs,
-    /// [`YyyyMmDdHhMmSsSss`] `%Y-%m-%d %H:%M:%S%.3f`
+    /// `YyyyMmDdHhMmSsSss` `%Y-%m-%d %H:%M:%S%.3f`
     YyyyMmDdHhMmSsSss,
 
-    /// [`HhMm`] `%H:%M`
+    /// `HhMm` `%H:%M`
     HhMm,
-    /// [`HhMmSs`] `%H:%M:%S`
+    /// `HhMmSs` `%H:%M:%S`
     HhMmSs,
 
-    /// [`MonthFull`] `%B`
+    /// `MonthFull` `%B`
     MonthFull,
-    /// [`MonthAbbr`] `%b`
+    /// `MonthAbbr` `%b`
     MonthAbbr,
 
-    /// [`WeekdayFull`] `%A`
+    /// `WeekdayFull` `%A`
     WeekdayFull,
-    /// [`WeekdayAbbr`] `%a`
+    /// `WeekdayAbbr` `%a`
     WeekdayAbbr,
 
-    /// [`AmPm`] `%p`
+    /// `AmPm` `%p`
     AmPm,
 
-    /// [`Timestamp`] `unix timestamp`
+    /// `Timestamp` `unix timestamp`
     Timestamp,
 }
 
 #[allow(dead_code)]
 impl DateTimePattern {
-    /// [`YYYY_MM_DD`] `%Y-%m-%d`
+    /// `YYYY_MM_DD` `%Y-%m-%d`
     pub const YYYY_MM_DD: &'static str = "%Y-%m-%d";
-    /// [`MM_DD_YYYY`] `%m/%d/%Y`
+    /// `MM_DD_YYYY` `%m/%d/%Y`
     pub const MM_DD_YYYY: &'static str = "%m/%d/%Y";
-    /// [`DD_MM_YYYY`] `%d-%m-%Y`
+    /// `DD_MM_YYYY` `%d-%m-%Y`
     pub const DD_MM_YYYY: &'static str = "%d-%m-%Y";
 
-    /// [`YYYY_MM_DD_HH_MM`] `%Y-%m-%d %H:%M`
+    /// `YYYY_MM_DD_HH_MM` `%Y-%m-%d %H:%M`
     pub const YYYY_MM_DD_HH_MM: &'static str = "%Y-%m-%d %H:%M";
-    /// [`YYYY_MM_DD_HH_MM_SS`] `%Y-%m-%d %H:%M:%S`
+    /// `YYYY_MM_DD_HH_MM_SS` `%Y-%m-%d %H:%M:%S`
     pub const YYYY_MM_DD_HH_MM_SS: &'static str = "%Y-%m-%d %H:%M:%S";
-    /// [`YYYY_MM_DD_HH_MM_SS_SSS`] `%Y-%m-%d %H:%M:%S%.3f`
+    /// `YYYY_MM_DD_HH_MM_SS_SSS` `%Y-%m-%d %H:%M:%S%.3f`
     pub const YYYY_MM_DD_HH_MM_SS_SSS: &'static str = "%Y-%m-%d %H:%M:%S%.3f";
 
-    /// [`HH_MM`] `%H:%M`
+    /// `HH_MM` `%H:%M`
     pub const HH_MM: &'static str = "%H:%M";
-    /// [`HH_MM_SS`] `%H:%M:%S`
+    /// `HH_MM_SS` `%H:%M:%S`
     pub const HH_MM_SS: &'static str = "%H:%M:%S";
 
-    /// [`MONTH_FULL`] `%B`
+    /// `MONTH_FULL` `%B`
     pub const MONTH_FULL: &'static str = "%B";
-    /// [`MONTH_ABBR`] `%b`
+    /// `MONTH_ABBR` `%b`
     pub const MONTH_ABBR: &'static str = "%b";
 
-    /// [`WEEKDAY_FULL`] `%A`
+    /// `WEEKDAY_FULL` `%A`
     pub const WEEKDAY_FULL: &'static str = "%A";
-    /// [`WEEKDAY_ABBR`] `%a`
+    /// `WEEKDAY_ABBR` `%a`
     pub const WEEKDAY_ABBR: &'static str = "%a";
 
-    /// [`AM_PM`] `%p`
+    /// `AM_PM` `%p`
     pub const AM_PM: &'static str = "%p";
 
-    /// [`TIMESTAMP`] `timestamp`
+    /// `TIMESTAMP` `timestamp`
     pub const TIMESTAMP: &'static str = "timestamp";
 
     // ----------------------------------------------------------------
 
-    /// [`YYYY_MM_DD_NAME`] `YyyyMmDd`
+    /// `YYYY_MM_DD_NAME` `YyyyMmDd`
     pub const YYYY_MM_DD_NAME: &'static str = "YyyyMmDd";
-    /// [`MM_DD_YYYY_NAME`] `MmDdYyyy`
+    /// `MM_DD_YYYY_NAME` `MmDdYyyy`
     pub const MM_DD_YYYY_NAME: &'static str = "MmDdYyyy";
-    /// [`DD_MM_YYYY_NAME`] `DdMmYyyy`
+    /// `DD_MM_YYYY_NAME` `DdMmYyyy`
     pub const DD_MM_YYYY_NAME: &'static str = "DdMmYyyy";
 
-    /// [`YYYY_MM_DD_HH_MM_NAME`] `YyyyMmDdHhMm`
+    /// `YYYY_MM_DD_HH_MM_NAME` `YyyyMmDdHhMm`
     pub const YYYY_MM_DD_HH_MM_NAME: &'static str = "YyyyMmDdHhMm";
-    /// [`YYYY_MM_DD_HH_MM_SS_NAME`] `YyyyMmDdHhMmSs`
+    /// `YYYY_MM_DD_HH_MM_SS_NAME` `YyyyMmDdHhMmSs`
     pub const YYYY_MM_DD_HH_MM_SS_NAME: &'static str = "YyyyMmDdHhMmSs";
-    /// [`YYYY_MM_DD_HH_MM_SS_SSS_NAME`] `YyyyMmDdHhMmSsSss`
+    /// `YYYY_MM_DD_HH_MM_SS_SSS_NAME` `YyyyMmDdHhMmSsSss`
     pub const YYYY_MM_DD_HH_MM_SS_SSS_NAME: &'static str = "YyyyMmDdHhMmSsSss";
 
-    /// [`HH_MM_NAME`] `HhMm`
+    /// `HH_MM_NAME` `HhMm`
     pub const HH_MM_NAME: &'static str = "HhMm";
-    /// [`HH_MM_SS_NAME`] `HhMmSs`
+    /// `HH_MM_SS_NAME` `HhMmSs`
     pub const HH_MM_SS_NAME: &'static str = "HhMmSs";
 
-    /// [`MONTH_FULL_NAME`] `MonthFull`
+    /// `MONTH_FULL_NAME` `MonthFull`
     pub const MONTH_FULL_NAME: &'static str = "MonthFull";
-    /// [`MONTH_ABBR_NAME`] `MonthAbbr`
+    /// `MONTH_ABBR_NAME` `MonthAbbr`
     pub const MONTH_ABBR_NAME: &'static str = "MonthAbbr";
 
-    /// [`WEEKDAY_FULL_NAME`] `WeekdayFull`
+    /// `WEEKDAY_FULL_NAME` `WeekdayFull`
     pub const WEEKDAY_FULL_NAME: &'static str = "WeekdayFull";
-    /// [`WEEKDAY_ABBR_NAME`] `WeekdayAbbr`
+    /// `WEEKDAY_ABBR_NAME` `WeekdayAbbr`
     pub const WEEKDAY_ABBR_NAME: &'static str = "WeekdayAbbr";
 
-    /// [`AM_PM_NAME`] `AmPm`
+    /// `AM_PM_NAME` `AmPm`
     pub const AM_PM_NAME: &'static str = "AmPm";
 
-    /// [`TIMESTAMP_NAME`] `Timestamp`
+    /// `TIMESTAMP_NAME` `Timestamp`
     pub const TIMESTAMP_NAME: &'static str = "Timestamp";
 
     // ----------------------------------------------------------------
 
-    /// [`value`]
-    ///
     /// Retrieves the string representation of a [`DateTimePattern`].
     ///
     /// # Examples
@@ -149,8 +147,6 @@ impl DateTimePattern {
 }
 
 impl DateTimePattern {
-    /// [`pattern_of`]
-    ///
     /// Retrieves the static string representation of a date and time pattern.
     ///
     /// # Examples
@@ -180,15 +176,13 @@ impl DateTimePattern {
         }
     }
 
-    /// [`value_of`]
-    ///
     /// Returns the corresponding date-time pattern based on the provided pattern string.
     ///
     /// # Parameters
     /// `pattern`: A reference to a string representing a date-time pattern, e.g., [`%Y-%m-%d`].
     ///
     /// # Return Value
-    /// An [`Option<Self>`] containing the matched pattern if one is found; otherwise, returns [`None`]
+    /// An `Option<Self>` containing the matched pattern if one is found; otherwise, returns [`None`]
     ///
     /// # Examples
     ///
@@ -219,15 +213,13 @@ impl DateTimePattern {
         }
     }
 
-    /// [`name_of`]
-    ///
     /// Returns the corresponding date-time pattern based on the provided name string.
     ///
     /// # Parameters
     /// `pattern`: A reference to a string representing a date-time name, e.g., [`YyyyMmDd`].
     ///
     /// # Return Value
-    /// An [`Option<Self>`] containing the matched name if one is found; otherwise, returns [`None`]
+    /// An `Option<Self>` containing the matched name if one is found; otherwise, returns [`None`]
     ///
     /// # Examples
     ///

@@ -1,6 +1,6 @@
 [package]
 name = "chronounit"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 authors = ["photowey"]
 license = "Apache-2.0"
@@ -18,3 +18,4 @@ categories = ["date-and-time"]
 
 [dependencies]
 chrono = "0.4"
+lazy_static = "1.4"

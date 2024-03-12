@@ -21,7 +21,9 @@ use std::time::Duration;
 
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 
-use crate::formatter::{pattern::DateTimePattern, DateTimeFormatter, DefaultDateTimeFormatter};
+use crate::formatter::{
+    self, pattern::DateTimePattern, DateTimeFormatter, DefaultDateTimeFormatter,
+};
 use crate::TimeUnit;
 
 // ---------------------------------------------------------------- date-time pattern
@@ -653,7 +655,101 @@ fn test_date_time_formatter_naive_date_time_format_timestamp() {
     );
 }
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------- formatter fn
+
+#[test]
+fn test_formatter_fn_format_date_time_utc_default() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    assert_eq!(
+        formatter::format_date_time_utc_default(&datetime_utc),
+        "2024-03-12 22:55:00"
+    );
+}
+
+#[test]
+fn test_formatter_fn_format_naive_date_time_utc_default() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+    assert_eq!(
+        formatter::format_naive_date_time_utc_default(&ndt),
+        "2024-03-12 22:55:00"
+    );
+}
+
+#[test]
+fn test_formatter_fn_format_naive_date_time_default() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+    assert_eq!(
+        formatter::format_naive_date_time_utc_default(&ndt),
+        "2024-03-12 22:55:00"
+    );
+}
+
+#[test]
+fn test_formatter_fn_format_date_time_utc() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+    let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+
+    assert_eq!(
+        formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+        "2024-03-12"
+    );
+    assert_eq!(
+        formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-12 22:55:00"
+    );
+    assert_eq!(
+        formatter::format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
+        "22:55:00"
+    );
+}
+
+#[test]
+fn test_formatter_fn_format_naive_date_time_utc() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+    assert_eq!(
+        formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDd),
+        "2024-03-12"
+    );
+    assert_eq!(
+        formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-12 22:55:00"
+    );
+    assert_eq!(
+        formatter::format_naive_date_time_utc(&ndt, DateTimePattern::HhMmSs),
+        "22:55:00"
+    );
+}
+
+#[test]
+fn test_formatter_fn_format_naive_date_time() {
+    let now = "2024-03-12 22:55:00";
+    let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+    assert_eq!(
+        formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
+        "2024-03-12"
+    );
+    assert_eq!(
+        formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+        "2024-03-12 22:55:00"
+    );
+    assert_eq!(
+        formatter::format_naive_date_time(&ndt, DateTimePattern::HhMmSs),
+        "22:55:00"
+    );
+}
+
+// ---------------------------------------------------------------- date-time pattern
 
 #[test]
 fn test_date_time_pattern_pattern_of() {

@@ -16,7 +16,10 @@
 
 // ----------------------------------------------------------------
 
+use std::sync::{Arc, Mutex};
+
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use lazy_static::lazy_static;
 
 use crate::formatter::pattern::DateTimePattern;
 
@@ -26,10 +29,8 @@ pub mod pattern;
 
 // ----------------------------------------------------------------
 
-/// [`DateTimeFormatter`] date-time `formatter`
+/// `DateTimeFormatter` date-time `formatter`
 pub trait DateTimeFormatter {
-    /// [`of_pattern`]
-    ///
     /// Activates the pattern of the formatter.
     ///
     /// # Examples
@@ -47,21 +48,15 @@ pub trait DateTimeFormatter {
     /// ```
     fn of_pattern(&self, pattern: DateTimePattern) -> Box<dyn DateTimeFormatter>;
 
-    /// [`activated_pattern`]
-    ///
     /// Get the pattern associated with this formatter.
     fn activated_pattern(&self) -> DateTimePattern;
 
-    /// [`format_date_time_utc_default`]
-    ///
-    /// Formats a UTC date and time according to the formatter default pattern(new/or_pattern).
+    /// Formats a [`DateTime<Utc>`] according to the formatter default pattern(new/or_pattern).
     fn format_date_time_utc_default(&self, datetime: &DateTime<Utc>) -> String {
         self.format_date_time_utc(datetime, self.activated_pattern())
     }
 
-    /// [`format_date_time_utc`]
-    ///
-    /// Formats a UTC date and time according to the specified pattern.
+    /// Formats a [`DateTime<Utc>`] according to the specified pattern.
     ///
     /// This function takes a reference to a `DateTime<Utc>` object and a `DateTimePattern` enum value,
     /// then formats the datetime based on the provided pattern, returning a formatted string.
@@ -96,8 +91,6 @@ pub trait DateTimeFormatter {
 
     // ----------------------------------------------------------------
 
-    /// [`format_naive_date_time_utc_default`]
-    ///
     /// Formats a [`NaiveDateTime`] according to the formatter default pattern(new/or_pattern).
     ///
     /// This function takes a reference to a [`NaiveDateTime`] object,
@@ -107,8 +100,6 @@ pub trait DateTimeFormatter {
         self.format_date_time_utc(&datetime_utc, self.activated_pattern())
     }
 
-    /// [`format_naive_date_time`]
-    ///
     /// Formats a [`NaiveDateTime`] according to the specified pattern.
     ///
     /// This function takes a reference to a [`NaiveDateTime`] object and a [`DateTimePattern`] enum value,
@@ -122,15 +113,11 @@ pub trait DateTimeFormatter {
         self.format_date_time_utc(&datetime_utc, pattern)
     }
 
-    /// [`format_naive_date_time_default`]
-    ///
     /// Formats a [`NaiveDateTime`] date and time according to the formatter default pattern(new/or_pattern).
     fn format_naive_date_time_default(&self, datetime: &NaiveDateTime) -> String {
         self.format_naive_date_time(datetime, self.activated_pattern())
     }
 
-    /// [`format_naive_date_time`]
-    ///
     /// Formats a [`NaiveDateTime`] according to the specified pattern.
     ///
     /// This function takes a reference to a [`NaiveDateTime`] object and a `DateTimePattern` enum value,
@@ -172,12 +159,12 @@ pub struct DefaultDateTimeFormatter {
 }
 
 impl DateTimeFormatter for DefaultDateTimeFormatter {
-    // override
+    /// override
     fn of_pattern(&self, pattern: DateTimePattern) -> Box<dyn DateTimeFormatter> {
         Box::new(DefaultDateTimeFormatter::new(pattern))
     }
 
-    // override
+    /// override
     fn activated_pattern(&self) -> DateTimePattern {
         self.pattern.clone()
     }
@@ -192,4 +179,201 @@ impl DefaultDateTimeFormatter {
     pub fn new(pattern: DateTimePattern) -> Self {
         DefaultDateTimeFormatter { pattern }
     }
+}
+
+// ----------------------------------------------------------------
+
+lazy_static! {
+    static ref BUILT_IN_FORMATTER: Arc<Mutex<Option<DefaultDateTimeFormatter>>> =
+        Arc::new(Mutex::new(None));
+}
+
+fn formatter() -> Arc<Mutex<Option<DefaultDateTimeFormatter>>> {
+    let mut instance = BUILT_IN_FORMATTER.lock().unwrap();
+    if instance.is_none() {
+        *instance = Some(DefaultDateTimeFormatter::builtin());
+    }
+
+    Arc::clone(&BUILT_IN_FORMATTER)
+}
+
+// ----------------------------------------------------------------
+
+/// Formats a [`DateTime<Utc>`] date and time according to the builtin formatter default pattern([`DateTimePattern::YyyyMmDdHhMmSs`]).
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+/// use chronounit::formatter;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+/// let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+///
+/// assert_eq!(
+///     formatter::format_date_time_utc_default(&datetime_utc),
+///     "2024-03-12 22:55:00"
+/// );
+/// ```
+pub fn format_date_time_utc_default(datetime: &DateTime<Utc>) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_date_time_utc_default(datetime)
+}
+
+/// Formats a [`NaiveDateTime`] according to the builtin formatter default pattern([`DateTimePattern::YyyyMmDdHhMmSs`]).
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::NaiveDateTime;
+/// use chronounit::formatter;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+///
+/// assert_eq!(
+///     formatter::format_naive_date_time_utc_default(&ndt),
+///     "2024-03-12 22:55:00"
+/// );
+/// ```
+pub fn format_naive_date_time_utc_default(datetime: &NaiveDateTime) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_naive_date_time_utc_default(datetime)
+}
+
+/// Formats a [`NaiveDateTime`] according to the builtin formatter default pattern([`DateTimePattern::YyyyMmDdHhMmSs`]).
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::NaiveDateTime;
+/// use chronounit::formatter;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+///
+/// assert_eq!(
+///     formatter::format_naive_date_time_utc_default(&ndt),
+///     "2024-03-12 22:55:00"
+/// );
+/// ```
+pub fn format_naive_date_time_default(datetime: &NaiveDateTime) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_naive_date_time_default(datetime)
+}
+
+/// Formats a [`DateTime<Utc>`] according to the specified pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+/// use chronounit::formatter;
+/// use chronounit::formatter::pattern::DateTimePattern;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+/// let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime(&ndt);
+///
+/// assert_eq!(
+///     formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+///     "2024-03-12"
+/// );
+/// assert_eq!(
+///     formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+///     "2024-03-12 22:55:00"
+/// );
+/// assert_eq!(
+///     formatter::format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
+///     "22:55:00"
+/// );
+/// ```
+pub fn format_date_time_utc(datetime: &DateTime<Utc>, pattern: DateTimePattern) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_date_time_utc(datetime, pattern)
+}
+
+/// Formats a [`NaiveDateTime`] -> [`DateTime<Utc>`] according to the specified pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::NaiveDateTime;
+/// use chronounit::formatter;
+/// use chronounit::formatter::pattern::DateTimePattern;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+///
+/// assert_eq!(
+///     formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDd),
+///     "2024-03-12"
+/// );
+/// assert_eq!(
+///     formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+///     "2024-03-12 22:55:00"
+/// );
+/// assert_eq!(
+///     formatter::format_naive_date_time_utc(&ndt, DateTimePattern::HhMmSs),
+///     "22:55:00"
+/// );
+/// ```
+pub fn format_naive_date_time_utc(datetime: &NaiveDateTime, pattern: DateTimePattern) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_naive_date_time_utc(datetime, pattern)
+}
+
+/// Formats a [`NaiveDateTime`] according to the specified pattern.
+///
+/// # Examples
+///
+/// ```rust
+/// use chrono::NaiveDateTime;
+/// use chronounit::formatter;
+/// use chronounit::formatter::pattern::DateTimePattern;
+///
+/// let now = "2024-03-12 22:55:00";
+/// let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+///
+/// assert_eq!(
+///     formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
+///     "2024-03-12"
+/// );
+/// assert_eq!(
+///     formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+///     "2024-03-12 22:55:00"
+/// );
+/// assert_eq!(
+///     formatter::format_naive_date_time(&ndt, DateTimePattern::HhMmSs),
+///     "22:55:00"
+/// );
+/// ```
+pub fn format_naive_date_time(datetime: &NaiveDateTime, pattern: DateTimePattern) -> String {
+    formatter()
+        .lock()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .format_naive_date_time(datetime, pattern)
 }

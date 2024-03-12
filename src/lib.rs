@@ -19,7 +19,16 @@
 use std::thread;
 use std::time::Duration;
 
+// ----------------------------------------------------------------
+
 pub mod formatter;
+
+/// @since 0.3.0
+#[macro_use]
+pub mod macros;
+
+#[cfg(test)]
+mod macro_tests;
 #[cfg(test)]
 mod tests;
 
@@ -111,7 +120,6 @@ impl TimeUnit {
 
     // ----------------------------------------------------------------
 
-    /// [`to_nanos`]
     /// Converts the given time amount to nanoseconds.
     ///
     /// # Arguments
@@ -145,7 +153,6 @@ impl TimeUnit {
         }
     }
 
-    /// [`to_micros`]
     /// Converts the given time amount to microseconds.
     ///
     /// # Arguments
@@ -171,7 +178,6 @@ impl TimeUnit {
         self.to_nanos(amount) / Self::NANOS_PER_MICROSECOND
     }
 
-    /// [`to_millis`]
     /// Converts the given time amount to milliseconds.
     ///
     /// # Arguments
@@ -197,7 +203,6 @@ impl TimeUnit {
         self.to_nanos(amount) / Self::NANOS_PER_MILLISECOND
     }
 
-    /// [`to_seconds`]
     /// Converts the given time amount to seconds.
     ///
     /// # Arguments
@@ -223,7 +228,6 @@ impl TimeUnit {
         self.to_nanos(amount) / Self::NANOS_PER_SECOND
     }
 
-    /// [`to_minutes`]
     /// Converts the given time amount to minutes.
     ///
     /// # Arguments
@@ -249,7 +253,6 @@ impl TimeUnit {
         self.to_seconds(amount) / Self::SECONDS_PER_MINUTE
     }
 
-    /// [`to_hours`]
     /// Converts the given time amount to hours.
     ///
     /// # Arguments
@@ -275,7 +278,6 @@ impl TimeUnit {
         self.to_minutes(amount) / Self::MINUTES_PER_HOUR
     }
 
-    /// [`to_days`]
     /// Converts the given time amount to days.
     ///
     /// # Arguments
@@ -301,7 +303,6 @@ impl TimeUnit {
         self.to_hours(amount) / Self::HOURS_PER_DAY
     }
 
-    /// [`to_duration`]
     /// Converts the given time amount to a `std` [`Duration`].
     ///
     /// # Arguments
@@ -336,7 +337,6 @@ impl TimeUnit {
         }
     }
 
-    /// [`to_chrono_duration`]
     /// Converts the given time amount to a `std` [`Duration`].
     ///
     /// # Arguments
@@ -371,8 +371,6 @@ impl TimeUnit {
         }
     }
 
-    /// [`value`]
-    ///
     /// Retrieves the string representation of this [`TimeUnit`].
     ///
     /// # Returns
@@ -395,8 +393,6 @@ impl TimeUnit {
         format!("{:?}", self)
     }
 
-    /// [`sleep`]
-    ///
     /// Sleeps for a specified amount of time according to the [`TimeUnit`],
     ///
     /// # Arguments
@@ -420,8 +416,6 @@ impl TimeUnit {
         thread::sleep(duration);
     }
 
-    /// [`closure_sleep`]
-    ///
     /// Sleeps for a specified amount of time according to the [`TimeUnit`],
     /// then executes a custom sleep function provided by the user/caller.
     ///
@@ -457,8 +451,6 @@ impl TimeUnit {
         callback(duration);
     }
 
-    /// [`closure_chrono_sleep`]
-    ///
     /// Sleeps for a specified amount of time according to the [`TimeUnit`],
     /// then executes a custom sleep function provided by the user/caller.
     ///
@@ -496,8 +488,6 @@ impl TimeUnit {
 }
 
 impl TimeUnit {
-    /// [`value_of`]
-    ///
     /// Returns the corresponding [`TimeUnit`] enum based on the provided [`TimeUnit`] value/name.
     ///
     /// # Arguments
@@ -530,8 +520,6 @@ impl TimeUnit {
         }
     }
 
-    /// [`insensitive_case_value_of`]
-    ///
     /// Returns the corresponding [`TimeUnit`] enum based on the provided [`TimeUnit`] value/name.
     /// performing a case-insensitive match.
     ///
