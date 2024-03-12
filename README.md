@@ -10,8 +10,9 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
+chronounit = "0.3"
+# If necessary
 chrono = "0.4"
-chronounit = "0.2"
 ```
 
 ## 2.`APIs`
@@ -177,6 +178,210 @@ let dtf = DefaultDateTimeFormatter::new(DateTimePattern::YyyyMmDdHhMmSs);
 assert_eq!(
   dtf.format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
   "2024-03-01 02:03:04"
+);
+```
+
+#### 2.2.5.`Function`
+
+- @since 0.3.0
+
+##### 2.2.5.1.`format_date_time_utc_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime( & ndt);
+
+assert_eq!(
+  formatter::format_date_time_utc_default(&datetime_utc),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.5.2.`format_naive_date_time_utc_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  formatter::format_naive_date_time_utc_default(&ndt),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.5.3.`format_naive_date_time_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  formatter::format_naive_date_time_utc_default(&ndt),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.5.4.`format_date_time_utc`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime( & ndt);
+
+assert_eq!(
+  formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  formatter::format_date_time_utc(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  formatter::format_date_time_utc(&datetime_utc, DateTimePattern::HhMmSs),
+  "22:55:00"
+);
+```
+
+##### 2.2.5.5.`format_naive_date_time_utc`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  formatter::format_naive_date_time_utc(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  formatter::format_naive_date_time_utc(&ndt, DateTimePattern::HhMmSs),
+  "22:55:00"
+);
+```
+
+##### 2.2.5.6.`format_naive_date_time`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  formatter::format_naive_date_time(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  formatter::format_naive_date_time(&ndt, DateTimePattern::HhMmSs),
+  "22:55:00"
+);
+```
+
+#### 2.2.6.`Macro`
+
+- @since 0.3.0
+
+##### 2.2.6.1.`format_date_time_utc_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime( & ndt);
+
+assert_eq!(
+  format_date_time_utc_default!(&datetime_utc),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.6.2.`format_naive_date_time_utc_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  format_naive_date_time_utc_default!(&ndt),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.6.3.`format_naive_date_time_default`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  format_naive_date_time_utc_default!(&ndt),
+  "2024-03-12 22:55:00"
+);
+```
+
+##### 2.2.6.4.`format_date_time_utc`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+let datetime_utc: DateTime<Utc> = Utc.from_utc_datetime( & ndt);
+
+assert_eq!(
+  format_date_time_utc!(&datetime_utc, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  format_date_time_utc!(&datetime_utc, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  format_date_time_utc!(&datetime_utc, DateTimePattern::HhMmSs),
+  "22:55:00"
+);
+```
+
+##### 2.2.6.5.`format_naive_date_time_utc`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  format_naive_date_time_utc!(&ndt, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  format_naive_date_time_utc!(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  format_naive_date_time_utc!(&ndt, DateTimePattern::HhMmSs),
+  "22:55:00"
+);
+```
+
+##### 2.2.6.6.`format_naive_date_time`
+
+```rust
+let now = "2024-03-12 22:55:00";
+let ndt = NaiveDateTime::parse_from_str(now, "%Y-%m-%d %H:%M:%S").expect("Parse error");
+
+assert_eq!(
+  format_naive_date_time!(&ndt, DateTimePattern::YyyyMmDd),
+  "2024-03-12"
+);
+assert_eq!(
+  format_naive_date_time!(&ndt, DateTimePattern::YyyyMmDdHhMmSs),
+  "2024-03-12 22:55:00"
+);
+assert_eq!(
+  format_naive_date_time!(&ndt, DateTimePattern::HhMmSs),
+  "22:55:00"
 );
 ```
 
